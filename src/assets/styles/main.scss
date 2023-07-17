@@ -1,0 +1,20 @@
+// importing setup folder
+@import "./setup/variables";
+@import "./setup/typography";
+@import "./setup/functions";
+@import "./setup/mixins";
+// @import "./setup/";
+
+
+// importing basics folder
+@import "./basics/base";
+// @import "./basics/";
+
+
+// importing views folder
+@import "./views/HomePage";
+// @import "./views/";
+
+// importing components folder
+@import "./cmps/AppHeader";
+// @import "./cmps/";
