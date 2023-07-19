@@ -69,7 +69,7 @@ const HomePage = (props: Props) => {
     };
 
     return (
-        <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ position: 'absolute', top: 80, left: 0, right: 0, bottom: 0 }}>
             <div className='intro'>
                 {boxInfo()}
             </div>
