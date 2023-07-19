@@ -1,9 +1,12 @@
-@mixin btn($hover-color: white) {
+@mixin btn($hover-color: $white, $font-size: 20px) {
     background-color: transparent;
-    border: 1px solid gray;
-    border-radius: 20px;
-    padding: 12px 25px;
+    border: 1px solid $gray;
+    border-radius: 30px;
+    padding: 12px 35px;
     cursor: pointer;
+    font-size: $font-size;
+    font-weight: bold;
+    font-family: NunitoB, 'Courier New', Courier, monospace;
 
     &:hover {
         background-color: $hover-color;

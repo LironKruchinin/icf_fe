@@ -25,7 +25,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: interphaseB;
+    font-family: OswaldB, interphaseB, Courier, monospace;
     margin: 0 0 0.6em;
     line-height: 1;
 }
@@ -65,4 +65,12 @@ a:hover {
 .debug {
     outline: 1px solid red;
     background-color: rgba(255, 0, 0, 0.151);
+}
+
+.dark-mode {
+    background-color: $black;
+
+    a {
+        color: $white;
+    }
 }

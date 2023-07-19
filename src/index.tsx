@@ -1,27 +1,16 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from './views/HomePage';
-import LoginPage from './views/LoginPage';
-import RegisterPage from './views/RegisterPage';
-import AppHeader from './cmps/AppHeader';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './assets/styles/main.scss';
+import AnimatedRoutes from './cmps/AnimatedRoutes';
+import AppHeader from './cmps/AppHeader';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 )
 
 root.render(
-  <BrowserRouter>
+  <Router>
     <AppHeader />
-    <Routes>
-      <Route path='/' element={<HomePage />} />
-      <Route path='/login' element={<LoginPage />} />
-      <Route path='/register' element={<RegisterPage />} />
-    </Routes>
-  </BrowserRouter>
+    <AnimatedRoutes />
+  </Router>
 )
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

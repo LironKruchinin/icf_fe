@@ -1,8 +1,10 @@
 main {
+    font-family: Nunito, Courier, monospace;
+
     .intro {
         padding: 0 10px;
         display: grid;
-        min-height: 90vh;
+        min-height: 85vh;
         max-height: max-content;
         display: grid;
         grid-template-columns: 1fr 0.5fr;
@@ -56,6 +58,7 @@ main {
         align-items: flex-start;
         justify-content: space-around;
         padding: 10px;
+        width: 100%;
 
         p {
             margin: 0;
@@ -64,12 +67,12 @@ main {
 
         button {
             transform: translateX(-150%);
-            transition: transform 0.3s ease, background-color .2s ease;
-            opacity: 0.7;
+            transition: transform 0.3s ease, background-color .2s ease, opacity .2s ease;
+            opacity: 0.8;
             pointer-events: auto;
             position: relative;
             z-index: 2;
-            @include btn
+            @include btn;
         }
 
         &:hover button {
@@ -83,11 +86,29 @@ main {
         transition: filter 0.27s cubic-bezier(0.075, 0.82, 0.165, 1);
 
         &:hover {
-            filter: blur(3px);
+            filter: blur($home-blur);
 
             &~.data-box button {
                 transform: translateX($home-btn);
             }
         }
+    }
+}
+
+// display modes
+.box.dark-mode {
+
+    button {
+        @include btn($dark-blue);
+        color: $white;
+        border: 1px solid $blue !important;
+    }
+}
+
+.box.light-mode {
+
+    button {
+        @include btn($white);
+        border: 1px solid $blue !important;
     }
 }

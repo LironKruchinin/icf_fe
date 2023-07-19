@@ -5,5 +5,6 @@ export interface Boxes {
     buttonText: string,
     imageAlt?: string,
     isBlackFont?: boolean
+    buttonLink?: string
     boxStyle?: { [key: string]: string }
 }
