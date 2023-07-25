@@ -4,9 +4,14 @@ import { LoginFormData } from '../interface/Login'
 import { apiPostRequest } from '../services/api'
 import { setLocalStorage } from '../utils/localStorage'
 import { useNavigate } from 'react-router-dom'
+import { fetchUserData } from '../features/profileSlice'
+import { AppDispatch, RootState } from '../store/store'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 const LoginPage = () => {
+    const dispatch: AppDispatch = useDispatch();
+    const screenState = useSelector((state: RootState) => state.userProfile);
     const navigate = useNavigate()
     const [formData, setFormData] = useState<LoginFormData>({
         email: '',
@@ -26,7 +31,12 @@ const LoginPage = () => {
         })
         const { access_token } = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/login`, formData)
         setLocalStorage('accessToken', JSON.stringify(access_token))
-        if (access_token) navigate('/')
+        if (access_token) {
+            dispatch(fetchUserData(formData.email) as any)
+            navigate('/')
+            console.log(screenState);
+
+        }
     }
 
     return (
@@ -61,3 +71,7 @@ const LoginPage = () => {
 }
 
 export default LoginPage
+
+function dispatch(arg0: any) {
+    throw new Error('Function not implemented.')
+}

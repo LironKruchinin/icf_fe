@@ -7,11 +7,11 @@ export const apiPostRequest = async (endpoint: string, data: object, headerPrope
                 ...headerProperties
             },
             body: JSON.stringify(data)
-        })
+        });
 
-        const json = await response.json()
-        return json
+        const json = await response.json();
+        return json;
     } catch (error) {
-        throw (error)
+        throw (error);
     }
-}
+};

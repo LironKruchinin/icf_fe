@@ -48,6 +48,11 @@ footer {
 
 img {
     width: 100%;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
 }
 
 p {
@@ -56,11 +61,15 @@ p {
 
 a {
     text-decoration: none;
+    color: $dark-blue;
+    transition: color .2s;
+
+    &:hover {
+        text-decoration: none;
+        color: $darkest-blue;
+    }
 }
 
-a:hover {
-    text-decoration: underline;
-}
 
 .debug {
     outline: 1px solid red;
@@ -72,5 +81,18 @@ a:hover {
 
     a {
         color: $white;
+    }
+
+    .box {
+        background-color: $white;
+    }
+}
+
+.light-mode {
+    background-color: $white-light;
+
+
+    .box {
+        background-color: $black;
     }
 }
