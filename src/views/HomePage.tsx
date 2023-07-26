@@ -9,12 +9,26 @@ import ClanExplenation from '../cmps/ClanExplenation'
 import ImageSlider from '../cmps/ImageSlider'
 import ScrollMore from '../cmps/ScrollMore'
 import { Boxes } from '../interface/HomePage'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/store'
+import { useEffect } from 'react'
 
 type Props = {}
 
 const HomePage = (props: Props) => {
     const navigate = useNavigate()
+    const screenState = useSelector((state: RootState) => state.userProfile);
     // const images
+
+    useEffect(() => {
+        console.log(screenState);
+
+
+        return () => {
+
+        }
+    }, [screenState])
+
 
     const boxInfo = () => {
         const boxes: Boxes[] = [
@@ -88,7 +102,6 @@ const HomePage = (props: Props) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            style={{ position: 'absolute', top: 80, left: 0, right: 0, bottom: 0 }}
         >
             <div className='intro'>
                 {boxInfo()}

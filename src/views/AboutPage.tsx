@@ -24,9 +24,8 @@ const AboutPage = (props: Props) => {
         <motion.div initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            style={{ position: 'absolute', top: 80, left: 0, right: 0, bottom: 0 }}
         >
-            {users?.map(user => { return <div>{user.email}</div> })}
+            {users?.map((user, index) => { return <div key={user._id}>{user.email}</div> })}
         </motion.div>
     )
 }

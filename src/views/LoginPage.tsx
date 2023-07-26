@@ -32,7 +32,7 @@ const LoginPage = () => {
         const { access_token } = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/login`, formData)
         setLocalStorage('accessToken', JSON.stringify(access_token))
         if (access_token) {
-            dispatch(fetchUserData(formData.email) as any)
+            dispatch(fetchUserData(formData.email))
             navigate('/')
             console.log(screenState);
 
@@ -47,7 +47,6 @@ const LoginPage = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                style={{ position: 'absolute', top: 80, left: 0, right: 0, bottom: 0 }}
             >
 
                 <label htmlFor="email">Email:</label>
