@@ -5,11 +5,16 @@ import icfImage from '../assets/images/icf_logo.png'
 import { HiMoon, HiSun } from "react-icons/hi2";
 import ToggleSwitch from './ToggleSwitch';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 type Props = {}
 
 const AppHeader = (props: Props) => {
-    const [isDarkmode, setIsDarkMode] = useState<boolean | null>(getLocalStorage('isDarkMode') === 'null' ? false : true)
+    const [isDarkmode, setIsDarkMode] = useState<boolean | null>(
+        getLocalStorage('isDarkMode')
+    );
+    const screenState = useSelector((state: RootState) => state.userProfile)
     const links: Links[] = [
         { pagePath: '/about', linkName: 'About' },
         { pagePath: '/contact', linkName: 'Contact' },
@@ -19,12 +24,11 @@ const AppHeader = (props: Props) => {
 
     useEffect(() => {
         document.body.className = isDarkmode ? 'dark-mode' : 'light-mode'
-    }, [isDarkmode]);
+    }, [isDarkmode])
 
     const toggleDarkMode = (isOn: boolean) => {
-        console.log(isDarkmode);
-        setIsDarkMode(isOn)
-        setLocalStorage('isDarkmode', isOn)
+        setIsDarkMode(isOn);
+        setLocalStorage('isDarkMode', isOn)
     }
 
 
@@ -42,6 +46,7 @@ const AppHeader = (props: Props) => {
                 <div className="links">
                     <ToggleSwitch onToggle={toggleDarkMode} checkedIcon={<HiMoon />} unCheckedIcon={<HiSun />} isOn={isDarkmode} />
                     {links?.map((link, index) => {
+
                         return (
                             <NavLink to={link.pagePath} key={index}>
                                 <li>
