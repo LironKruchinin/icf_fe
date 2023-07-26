@@ -3,9 +3,12 @@ import React, { useState } from 'react'
 import { HiOutlineEye, HiOutlineEyeSlash } from "react-icons/hi2";
 import { RegisterFormData } from '../interface/Register';
 import { apiPostRequest } from '../services/api';
+import { setLocalStorage } from '../utils/localStorage';
+import { useNavigate } from 'react-router-dom';
 
 
 const RegisterPage = () => {
+    const navigate = useNavigate()
     const [formData, setFormData] = useState<RegisterFormData>({
         email: '',
         password: '',
@@ -15,7 +18,6 @@ const RegisterPage = () => {
     })
 
     const handleInput = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-        // console.log(target.name);
         const { value, name } = target
         setFormData(prevState => ({ ...prevState, [name]: value }))
     }
@@ -29,8 +31,16 @@ const RegisterPage = () => {
             user_name: '',
             phone_number: ''
         })
-        console.log(formData);
-        await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/register`, formData)
+        const data = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/register`, formData)
+        const { access_token } = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/login`, { email: formData.email, password: formData.password })
+        console.log('accessToken', access_token);
+
+        setLocalStorage('accessToken', JSON.stringify(access_token))
+        if (access_token) {
+            navigate('/')
+        }
+        console.log('register output', data);
+
     }
 
     return (
@@ -41,7 +51,6 @@ const RegisterPage = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                style={{ position: 'absolute', top: 80, left: 0, right: 0, bottom: 0 }}
             >
 
                 <label htmlFor="email">Email:</label>
@@ -91,3 +100,7 @@ const RegisterPage = () => {
 }
 
 export default RegisterPage
+
+function dispatch(arg0: any) {
+    throw new Error('Function not implemented.');
+}
