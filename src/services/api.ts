@@ -10,7 +10,6 @@ export const apiPostRequest = async (endpoint: string, data: object, headerPrope
         });
 
         const json = await response.json();
-
         return json;
     } catch (error) {
         throw (error);
