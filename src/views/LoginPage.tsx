@@ -46,7 +46,9 @@ const LoginPage = () => {
             <motion.form onSubmit={handleSubmit}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}>
+                exit={{ opacity: 0 }}
+                style={{ position: 'absolute', top: 80, left: 0, right: 0, bottom: 0 }}
+            >
 
                 <label htmlFor="email">Email:</label>
                 <input type="text" name="email"

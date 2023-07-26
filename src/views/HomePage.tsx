@@ -14,6 +14,7 @@ type Props = {}
 
 const HomePage = (props: Props) => {
     const navigate = useNavigate()
+    // const images
 
     const boxInfo = () => {
         const boxes: Boxes[] = [
@@ -67,7 +68,7 @@ const HomePage = (props: Props) => {
             }
 
             return (
-                <div className={'box' + ' pos' + index + (box.isBlackFont ? ' dark-mode' : ' light-mode')} key={index} style={box.boxStyle}>
+                <div className={'box' + ' pos' + index + (box.isBlackFont ? ' dark-mode' : ' light-mode')} key={index} style={box.boxStyle} >
                     <div className="image-container">
                         <img src={box.imageLink} alt={box.imageAlt} />
                     </div>
@@ -83,7 +84,12 @@ const HomePage = (props: Props) => {
     };
 
     return (
-        <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <motion.main
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ position: 'absolute', top: 80, left: 0, right: 0, bottom: 0 }}
+        >
             <div className='intro'>
                 {boxInfo()}
 
