@@ -5,8 +5,10 @@ import { apiPostRequest } from '../services/api';
 
 export const fetchUserData = createAsyncThunk('userData/post', async (email: string) => {
     try {
+        console.log('fetching email', email);
+
         const accessToken = getLocalStorage('accessToken')
-        console.log(JSON.parse(accessToken));
+        console.log('accessToken', accessToken);
 
         const data = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/profile`,
             { email: email },
@@ -16,6 +18,8 @@ export const fetchUserData = createAsyncThunk('userData/post', async (email: str
         return data
     }
     catch (err) {
+        console.log('failed getting user data');
+
         throw err
     }
 })
