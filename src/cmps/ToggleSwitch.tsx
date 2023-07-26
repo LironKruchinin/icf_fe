@@ -1,34 +1,33 @@
-// ToggleSwitch.js
-
 import React, { useState } from 'react';
 
-type ToggleSwitch = {
-    onToggle: Function
-    checkedIcon?: React.ReactNode
-    unCheckedIcon?: React.ReactNode
-    isOn?: boolean | string | null
-}
+type ToggleSwitchProps = {
+    onToggle: (isOn: boolean) => void;
+    checkedIcon?: React.ReactNode;
+    unCheckedIcon?: React.ReactNode;
+    isOn?: boolean | null;
+};
 
-const ToggleSwitch: React.FC<ToggleSwitch> = ({ onToggle, checkedIcon, unCheckedIcon, isOn }) => {
-    const [checked, setChecked] = useState(false);
+const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
+    onToggle,
+    checkedIcon,
+    unCheckedIcon,
+    isOn,
+}) => {
+    const [checked, setChecked] = useState<boolean>(
+        isOn === undefined || isOn === null ? false : isOn
+    );
 
     const handleToggle = () => {
-        let newValue = !checked
-        setChecked(newValue)
-        onToggle(newValue)
-    }
+        const newValue = !checked;
+        setChecked(newValue);
+        onToggle(newValue);
+    };
 
     return (
         <label className="toggle-switch">
-            <input
-                type="checkbox"
-                checked={checked}
-                onChange={handleToggle}
-            />
+            <input type="checkbox" checked={checked} onChange={handleToggle} />
             <span className="slider">
-                <span className="slider-icon">
-                    {checked ? checkedIcon : unCheckedIcon}
-                </span>
+                <span className="slider-icon">{checked ? checkedIcon : unCheckedIcon}</span>
             </span>
         </label>
     );
