@@ -6,6 +6,7 @@ import icf2 from '../assets/images/icf2.jpg'
 import icf4 from '../assets/images/icf4.gif'
 import icf5 from '../assets/images/icf5.png'
 import ClanExplenation from '../cmps/ClanExplenation'
+import ImageSlider from '../cmps/ImageSlider'
 import ScrollMore from '../cmps/ScrollMore'
 import { Boxes } from '../interface/HomePage'
 
@@ -90,10 +91,7 @@ const HomePage = (props: Props) => {
             <div className='description'>
                 <ScrollMore />
                 <ClanExplenation />
-                {/* We are a clan that focuses on realism while trying to gain experiences vibe and to make fun at the same time.
-                We are a unit that always wants to develop ourself and we welcome most players with open arms and believe that we can bring everyone to a high level of control in the game.
-                The unit simulates the diverse capabilities within the IDF and maintains a very high level of professionalism while performing various tasks and training. Our unit has real operators who in their daily lives are engaged in the fields of warfare in the IDF and gives thier point of view and diversity to the tasks from their personal experience during their time as fighters.
-                In our clan, we emphasize an immersive experience that gives the sense of reality in battle and lets the player enter a combative character whether in communication or in actions. */}
+                <ImageSlider images={[icf1, icf2, icf4, icf5]} />
             </div>
 
         </motion.main>

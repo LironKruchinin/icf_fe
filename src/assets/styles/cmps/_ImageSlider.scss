@@ -1,0 +1,64 @@
+.image-slider-wrapper {
+    position: relative;
+    width: 80%;
+    margin: auto;
+    padding: 0 50px; // Give some space for the buttons
+    margin-bottom: 3em;
+}
+
+.image-slider {
+    overflow: hidden;
+    height: 500px;
+    position: relative;
+    border-radius: 20px;
+
+    .slider-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.5s;
+        opacity: 1;
+
+        &.fading {
+            opacity: 0;
+        }
+    }
+}
+
+.slider-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+
+    button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 2rem; // Adjust as needed for the icon size
+        color: #333; // Adjust as needed for the icon color
+        transition: color 0.3s;
+
+        &:hover {
+            color: #555; // Adjust as needed for hover color
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .prev-btn {
+        position: absolute;
+        left: -40px; // Adjust as per the size of the button
+    }
+
+    .next-btn {
+        position: absolute;
+        right: -40px; // Adjust as per the size of the button
+    }
+}
