@@ -1,0 +1,77 @@
+footer {
+    height: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    .link {
+        padding: 5px 10px;
+        transition: transform .3s ease;
+
+        svg {
+            display: flex;
+            height: 40px;
+            width: 40px;
+        }
+
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+
+    div:last-child {
+        gap: 3px;
+        font-size: em(18px);
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-weight: bold;
+    }
+
+    .youtube {
+        color: rgb(255, 54, 54);
+
+        &:hover {
+            color: rgb(230, 35, 35);
+        }
+    }
+
+    .instagram,
+    .tiktok {
+        color: $black;
+
+        &:hover {
+            color: lighten($color: $black, $amount: 10);
+        }
+    }
+}
+
+.dark-mode {
+
+    footer {
+
+        .instagram,
+        .tiktok {
+            color: $white-light;
+
+            &:hover {
+                color: lighten($color: $white-light, $amount: 10);
+            }
+        }
+
+        .discord,
+        .facebook {
+            color: $blue;
+        }
+
+        div {
+            color: $white-light;
+        }
+    }
+
+}

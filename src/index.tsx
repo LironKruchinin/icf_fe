@@ -5,6 +5,7 @@ import AnimatedRoutes from './cmps/AnimatedRoutes';
 import AppHeader from './cmps/AppHeader';
 import { Provider } from 'react-redux';
 import store from './store/store';
+import AppFooter from './cmps/AppFooter';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,6 +16,7 @@ root.render(
     <Router>
       <AppHeader />
       <AnimatedRoutes />
+      <AppFooter />
     </Router>
   </Provider>
 )

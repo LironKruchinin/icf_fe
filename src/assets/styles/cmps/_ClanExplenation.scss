@@ -1,0 +1,20 @@
+.explenation {
+    h2 {
+        text-align: center;
+    }
+
+    p {
+        padding: 5px 150px;
+        text-align: center;
+    }
+}
+
+.dark-mode .explenation {
+    h2 {
+        color: $white-light;
+    }
+
+    p {
+        color: $white-light;
+    }
+}
