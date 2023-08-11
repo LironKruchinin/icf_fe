@@ -10,8 +10,6 @@ const AboutPage = (props: Props) => {
 
     useEffect(() => {
         getUsers()
-        console.log(users);
-
     }, [])
 
     const getUsers = async () => {
