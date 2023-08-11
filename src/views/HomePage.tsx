@@ -9,25 +9,25 @@ import ClanExplenation from '../cmps/ClanExplenation'
 import ImageSlider from '../cmps/ImageSlider'
 import ScrollMore from '../cmps/ScrollMore'
 import { Boxes } from '../interface/HomePage'
-import { useSelector } from 'react-redux'
-import { RootState } from '../store/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../store/store'
 import { useEffect } from 'react'
+import { apiPostRequest } from '../services/api'
+import Cookies from 'js-cookie'
+import { loginUser } from '../features/profileSlice'
 
-type Props = {}
-
-const HomePage = (props: Props) => {
+const HomePage = () => {
+    const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
     const screenState = useSelector((state: RootState) => state.userProfile);
-    // const images
 
     useEffect(() => {
-        console.log(screenState);
+        const token = Cookies.get('accessToken')
 
+        if (token) dispatch(loginUser)
 
-        return () => {
-
-        }
-    }, [screenState])
+        return () => { }
+    }, [document.cookie])
 
 
     const boxInfo = () => {
@@ -48,6 +48,7 @@ const HomePage = (props: Props) => {
                 <span>Stay in the loop with our exciting events!</span>
                 `,
                 buttonText: 'Explore Events',
+                buttonLink: '/event',
                 isBlackFont: true,
             },
             {
@@ -59,7 +60,6 @@ const HomePage = (props: Props) => {
                 buttonText: 'Learn More',
                 buttonLink: '/about',
                 isBlackFont: true,
-
             },
             {
                 imageLink: icf4,
@@ -68,17 +68,30 @@ const HomePage = (props: Props) => {
                 <span>Empower the Community You Love</span>
                 `,
                 buttonText: 'Help Us Grow',
+                buttonLink: '/support',
                 isBlackFont: true,
             },
         ]
 
         const sanitizeHTML = (html: string) => {
-            return { __html: DOMPurify.sanitize(html) }; // Sanitize the HTML using DOMPurify
+            return { __html: DOMPurify.sanitize(html) }
         }
 
         const mainScreenBoxes = boxes.map((box, index) => {
+
             const renderContent = () => {
-                return <div dangerouslySetInnerHTML={sanitizeHTML(box.boxText)} />;
+                if (screenState.data) {
+                    if (box.buttonText === 'Sign Up') {
+                        box.boxText = `
+                        <h2>View !</h2>
+                        <span>Connect, Engage, and Explore with Like-minded Individuals</span>
+                        `
+                        box.buttonText = ''
+                        box.buttonLink = ''
+                    }
+
+                }
+                return <div dangerouslySetInnerHTML={sanitizeHTML(box.boxText)} />
             }
 
             return (
