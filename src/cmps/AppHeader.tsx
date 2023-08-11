@@ -1,36 +1,52 @@
-import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import { Links } from '../interface/Header'
-import icfImage from '../assets/images/icf_logo.png'
+import { useEffect, useState } from 'react';
 import { HiMoon, HiSun } from "react-icons/hi2";
-import ToggleSwitch from './ToggleSwitch';
-import { getLocalStorage, setLocalStorage } from '../utils/localStorage';
 import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import icfImage from '../assets/images/icf_logo.png';
+import { Links } from '../interface/Header';
 import { RootState } from '../store/store';
+import { getLocalStorage, setLocalStorage } from '../utils/localStorage';
+import ToggleSwitch from './ToggleSwitch';
+import { loginUser, logoutUser } from '../features/profileSlice';
+import Cookies from 'js-cookie';
 
-type Props = {}
-
-const AppHeader = (props: Props) => {
-    const [isDarkmode, setIsDarkMode] = useState<boolean | null>(
-        getLocalStorage('isDarkMode')
-    );
+const AppHeader = () => {
+    const [isDarkmode, setIsDarkMode] = useState<boolean | null>(getLocalStorage('isDarkMode'))
+    const isAuthenticated = useSelector((state: RootState) => state.userProfile.isAuthenticated);
     const screenState = useSelector((state: RootState) => state.userProfile)
     const links: Links[] = [
         { pagePath: '/about', linkName: 'About' },
         { pagePath: '/contact', linkName: 'Contact' },
-        { pagePath: '/login', linkName: 'Login' },
-        { pagePath: '/register', linkName: 'Register' },
+        ...(!isAuthenticated ? [
+            { pagePath: '/login', linkName: 'Login' },
+            { pagePath: '/register', linkName: 'Register' }
+        ] : [
+            { pagePath: '/logout', linkName: 'Sign out' },
+            { pagePath: '/donate', linkName: 'Donate' },
+        ]),
     ]
+
+    // useEffect(() => {
+    //     const token = Cookies.get('accessToken');
+
+    //     if (token) {
+    //         // You might want to verify the token with your backend here.
+    //         // If the token is valid, dispatch the loginUser action.
+    //         dispatch(loginUser());
+    //     }
+    // }, [dispatch])
+
 
     useEffect(() => {
         document.body.className = isDarkmode ? 'dark-mode' : 'light-mode'
-    }, [isDarkmode])
+        console.log('headers', screenState);
+
+    }, [isDarkmode, screenState])
 
     const toggleDarkMode = (isOn: boolean) => {
-        setIsDarkMode(isOn);
+        setIsDarkMode(isOn)
         setLocalStorage('isDarkMode', isOn)
     }
-
 
     return (
         <nav>
@@ -38,23 +54,23 @@ const AppHeader = (props: Props) => {
                 <div className='left-side'>
                     <li>
                         <NavLink to={'/'}>
-                            <div className="img-container"><img src={icfImage} /></div>
+                            <div className="img-container"><img src={icfImage} alt="ICF Logo" /></div>
                             <h1>ICF</h1>
                         </NavLink>
                     </li>
                 </div>
                 <div className="links">
-                    <ToggleSwitch onToggle={toggleDarkMode} checkedIcon={<HiMoon />} unCheckedIcon={<HiSun />} isOn={isDarkmode} />
-                    {links?.map((link, index) => {
-
-                        return (
-                            <NavLink to={link.pagePath} key={index}>
-                                <li>
-                                    {link.linkName}
-                                </li>
-                            </NavLink>
-                        )
-                    })}
+                    <ToggleSwitch
+                        onToggle={toggleDarkMode}
+                        checkedIcon={<HiMoon />}
+                        unCheckedIcon={<HiSun />}
+                        isOn={isDarkmode}
+                    />
+                    {links.map((link, index) => (
+                        <NavLink to={link.pagePath} key={index}>
+                            <li>{link.linkName}</li>
+                        </NavLink>
+                    ))}
                 </div>
             </ul>
         </nav>
@@ -62,3 +78,7 @@ const AppHeader = (props: Props) => {
 }
 
 export default AppHeader
+
+function dispatch(arg0: any) {
+    throw new Error('Function not implemented.');
+}
