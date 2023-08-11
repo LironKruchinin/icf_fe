@@ -9,6 +9,7 @@ import { AppDispatch, RootState } from '../store/store'
 import { useDispatch, useSelector } from 'react-redux'
 import Cookies from 'js-cookie'
 import LoadingSpinner from '../cmps/LoadingSpinner'
+import { setCookie } from '../utils/Cookie'
 
 
 const LoginPage = () => {
@@ -37,7 +38,7 @@ const LoginPage = () => {
         const { access_token } = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/login`, formData)
         setLocalStorage('accessToken', JSON.stringify(access_token))
         dispatch(loginUser(formData.email))
-        Cookies.set('accessToken', access_token, { expires: 3 })
+        setCookie('accessToken', access_token, 3)
         if (access_token) {
             dispatch(fetchUserData(formData.email))
             navigate('/')

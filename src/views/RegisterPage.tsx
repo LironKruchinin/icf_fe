@@ -6,11 +6,10 @@ import { apiPostRequest } from '../services/api';
 import { setLocalStorage } from '../utils/localStorage';
 import { useNavigate } from 'react-router-dom';
 import { fetchUserData, loginUser } from '../features/profileSlice';
-import { AsyncThunkAction, Dispatch, AnyAction } from '@reduxjs/toolkit';
 import { AppDispatch } from '../store/store';
 import { useDispatch } from 'react-redux';
 import LoadingSpinner from '../cmps/LoadingSpinner';
-import Cookies from 'js-cookie';
+import { setCookie } from '../utils/Cookie';
 
 
 const RegisterPage = () => {
@@ -43,7 +42,7 @@ const RegisterPage = () => {
         const data = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/register`, formData)
         const { access_token } = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/login`, { email: formData.email, password: formData.password })
         dispatch(loginUser(formData.email))
-        Cookies.set('accessToken', access_token, { expires: 3, })
+        setCookie('accessToken', access_token, 3)
         setLocalStorage('accessToken', JSON.stringify(access_token))
         if (access_token) {
             dispatch(fetchUserData(formData.email))
