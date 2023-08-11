@@ -12,3 +12,7 @@ export function getLocalStorage(key: string) {
     }
 
 }
+
+export function removeLocalStorageKey(key: string) {
+    localStorage.removeItem(key)
+}
