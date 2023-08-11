@@ -2,10 +2,12 @@ import { createAsyncThunk, createSlice, isRejectedWithValue } from '@reduxjs/too
 import { getLocalStorage } from '../utils/localStorage';
 import { apiPostRequest } from '../services/api';
 
-export const fetchUserData = createAsyncThunk('userData/post', async (email: string | undefined) => {
+export const fetchUserData = createAsyncThunk('userData/post', async (
+    email: string | undefined) => {
     try {
         const accessToken = getLocalStorage('accessToken')
-        const data = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/profile`,
+        const data = await apiPostRequest(
+            `${process.env.REACT_APP_LOCAL_API_URL}/profile`,
             { email: email },
             { Authorization: `Bearer ${JSON.parse(accessToken)}` })
         console.log('data', data)
@@ -20,15 +22,14 @@ export const fetchUserData = createAsyncThunk('userData/post', async (email: str
 })
 
 interface UserProfileState {
-    data: UserData | null;
-    isAuthenticated: boolean;
-    isLoading: boolean;
-    error: string | null;
+    data: UserData | null
+    isAuthenticated: boolean
+    isLoading: boolean
+    error: string | null
 }
 
 interface UserData {
-    email: string;
-    // ... other fields of the user data
+    email: string
 }
 
 
