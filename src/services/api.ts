@@ -1,17 +1,17 @@
-export const apiPostRequest = async (endpoint: string, data: object, headerProperties: object = {}) => {
+import axios from 'axios';
+
+export const apiPostRequest = async (endpoint: string, data: object = {}, headerProperties: object = {}) => {
     try {
-        const response = await fetch(endpoint, {
-            method: 'POST',
+        const response = await axios.post(endpoint, data, {
             headers: {
                 'Content-Type': 'application/json',
                 ...headerProperties
             },
-            body: JSON.stringify(data)
+            withCredentials: true
         });
 
-        const json = await response.json();
-        return json;
+        return response.data;
     } catch (error) {
-        throw (error);
+        throw error;
     }
 };
