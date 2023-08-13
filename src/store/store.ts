@@ -1,15 +1,31 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import userProfileReducer from '../features/profileSlice';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 const rootReducer = combineReducers({
     userProfile: userProfileReducer,
 })
 
-export type RootState = ReturnType<typeof rootReducer>
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: ['userProfile'],
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
 
-const store = configureStore({
-    reducer: rootReducer
-});
+export const store = configureStore({
+    reducer: persistedReducer,
+    middleware: getDefaultMiddleware({
+        serializableCheck: {
+            ignoredActions: ['persist/PERSIST'],
+            ignoredPaths: ['some.path.to.ignore'],
+        },
+    }),
+})
 
-export default store;
+export const persistor = persistStore(store);
