@@ -14,22 +14,30 @@ import { AppDispatch, RootState } from '../store/store';
 import PageNotFound from '../views/PageNotFound';
 import EventsPage from '../views/EventsPage';
 import DonationPage from '../views/DonationPage';
+import ProfilePage from '../views/ProfilePage';
 
 const AnimatedRoutes = () => {
     const location = useLocation()
     const dispatch: AppDispatch = useDispatch()
     const userEmail = useSelector((state: RootState) => state.userProfile.data)
 
-    useEffect(() => {
-        const token = Cookies.get('accessToken')
+    const hasUserDataBeenFetched = useSelector((state: RootState) => state.userProfile.fetched);
 
-        if (token) dispatch(fetchUserData(userEmail?.email))
-    }, [dispatch])
+    useEffect(() => {
+        const token = Cookies.get('accessToken');
+        const isProfileRoute = location.pathname.startsWith('/profile/');
+
+        if (token && !isProfileRoute && !hasUserDataBeenFetched) {
+            dispatch(fetchUserData(userEmail?.email));
+        }
+    }, [dispatch, location.pathname, userEmail?.email, hasUserDataBeenFetched]);
+
 
     return (
         <AnimatePresence>
             <Routes location={location} key={location.pathname}>
                 <Route path='/' element={<HomePage />} />
+                <Route path='/profile/:id' element={<ProfilePage />} />
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/register' element={<RegisterPage />} />
                 <Route path='/about' element={<AboutPage />} />
