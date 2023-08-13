@@ -10,7 +10,6 @@ export const fetchUserData = createAsyncThunk('userData/post', async (
             `${process.env.REACT_APP_LOCAL_API_URL}/profile`,
             { email: email },
             { Authorization: `Bearer ${JSON.parse(accessToken)}` })
-        console.log('data', data)
 
         return data
     }
@@ -26,10 +25,16 @@ interface UserProfileState {
     isAuthenticated: boolean
     isLoading: boolean
     error: string | null
+    fetched: boolean | null
 }
 
 interface UserData {
-    email: string
+    created_at: number,
+    email: string,
+    first_name: string,
+    roles: [string],
+    user_name: string,
+    _id: string
 }
 
 
@@ -37,7 +42,8 @@ const initialState: UserProfileState = {
     data: null,
     isAuthenticated: false,
     isLoading: false,
-    error: null as string | null
+    error: null as string | null,
+    fetched: false
 }
 
 const userSlice = createSlice({
@@ -51,6 +57,7 @@ const userSlice = createSlice({
         logoutUser: (state) => {
             state.isAuthenticated = false
             state.data = null
+            state.fetched = false  // Reset fetched to false on logout
         }
     },
     extraReducers(builder) {
@@ -63,13 +70,15 @@ const userSlice = createSlice({
                 state.isLoading = false
                 state.data = action.payload
                 state.isAuthenticated = true
+                state.fetched = true  // Set fetched to true once data is successfully fetched
             })
             .addCase(fetchUserData.rejected, (state, action) => {
                 state.isLoading = false
                 state.isAuthenticated = false
                 state.error = action.error.message || 'Failed to fetch user data'
+                state.fetched = false  // Optionally, reset fetched to false on fetch error
             })
-    },
+    }
 })
 
 export const { actions } = userSlice
