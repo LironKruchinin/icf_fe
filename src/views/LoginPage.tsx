@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom'
 import { fetchUserData, loginUser } from '../features/profileSlice'
 import { AppDispatch, RootState } from '../store/store'
 import { useDispatch, useSelector } from 'react-redux'
-import Cookies from 'js-cookie'
 import LoadingSpinner from '../cmps/LoadingSpinner'
 import { setCookie } from '../utils/Cookie'
 
@@ -39,6 +38,8 @@ const LoginPage = () => {
         setLocalStorage('accessToken', JSON.stringify(access_token))
         dispatch(loginUser(formData.email))
         setCookie('accessToken', access_token, 3)
+        console.log(access_token);
+
         if (access_token) {
             dispatch(fetchUserData(formData.email))
             navigate('/')
