@@ -29,6 +29,11 @@ const HomePage = () => {
         return () => { }
     }, [document.cookie])
 
+    const shortText = `We are a realism-focused clan that values experiences and fun.
+    With real IDF operators, we simulate diverse capabilities and maintain high professionalism.
+    Join us for an immersive and engaging combat experience.`
+
+    const explenationTitle = `Embrace Realism, Unleash Fun: Join Our IDF-Inspired Clan!`
 
     const boxInfo = () => {
         const boxes: Boxes[] = [
@@ -122,7 +127,7 @@ const HomePage = () => {
             </div>
             <div className='description'>
                 <ScrollMore />
-                <ClanExplenation />
+                <ClanExplenation paragraphText={shortText} paragraphTitle={explenationTitle} />
                 <ImageSlider images={[icf1, icf2, icf4, icf5]} />
             </div>
 
