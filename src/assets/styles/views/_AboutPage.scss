@@ -1,0 +1,46 @@
+div {
+    font-family: Nunito, Courier, monospace;
+}
+
+
+.users-table {
+    margin-top: 20px;
+
+    table {
+        width: 95%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        border-spacing: 0;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+        th,
+        td {
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        th {
+            background-color: transparentize($color: $blue, $amount: 0.3);
+        }
+
+        tr:nth-child(odd) {
+            background-color: transparentize($color: $blue, $amount: 0.6);
+        }
+
+        tr {
+            border: 1px solid transparentize($color: $blue, $amount: 0.5);
+            cursor: pointer;
+            transition: background-color .2s;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &:hover {
+                background-color: transparentize($color: $blue, $amount: 0.75);
+            }
+        }
+    }
+}
