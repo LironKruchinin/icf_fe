@@ -22,7 +22,7 @@ export const store = configureStore({
     reducer: persistedReducer,
     middleware: getDefaultMiddleware({
         serializableCheck: {
-            ignoredActions: ['persist/PERSIST'],
+            ignoredActions: ['persist/PERSIST', 'persist/PURGE'],
             ignoredPaths: ['some.path.to.ignore'],
         },
     }),
