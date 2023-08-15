@@ -15,6 +15,9 @@ import PageNotFound from '../views/PageNotFound';
 import EventsPage from '../views/EventsPage';
 import DonationPage from '../views/DonationPage';
 import ProfilePage from '../views/ProfilePage';
+import ApplicationPage from '../views/ApplicationPage';
+import AdminPanel from '../views/AdminPanel';
+import NoPermissionPage from '../views/NoPermissionPage';
 
 const AnimatedRoutes = () => {
     const location = useLocation()
@@ -28,6 +31,8 @@ const AnimatedRoutes = () => {
         const isProfileRoute = location.pathname.startsWith('/profile/');
 
         if (token && !isProfileRoute && !hasUserDataBeenFetched) {
+            console.log('animated route', userEmail?.email);
+
             dispatch(fetchUserData(userEmail?.email));
         }
     }, [dispatch, location.pathname, userEmail?.email, hasUserDataBeenFetched]);
@@ -38,13 +43,16 @@ const AnimatedRoutes = () => {
             <Routes location={location} key={location.pathname}>
                 <Route path='/' element={<HomePage />} />
                 <Route path='/profile/:id' element={<ProfilePage />} />
+                <Route path='/application' element={<ApplicationPage />} />
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/register' element={<RegisterPage />} />
                 <Route path='/about' element={<AboutPage />} />
                 <Route path='/contact' element={<ContactPage />} />
                 <Route path='/logout' element={<Logout />} />
+                <Route path='/admin-panel' element={<AdminPanel />} />
                 <Route path='/event' element={<EventsPage />} />
                 <Route path='/support' element={<DonationPage />} />
+                <Route path='/no-permission' element={<NoPermissionPage />} />
                 <Route path='*' element={<PageNotFound />} />
             </Routes>
         </AnimatePresence>
