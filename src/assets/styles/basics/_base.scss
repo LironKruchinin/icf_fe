@@ -10,12 +10,14 @@
 html {
     // font-family: interphase;
     line-height: 1.5;
+    height: 100vh;
     // color: $white;
 }
 
 body {
     font-size: rem(18px);
     margin: 0;
+    height: 100%;
 }
 
 h1,
@@ -69,6 +71,19 @@ a {
     }
 }
 
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+    /* set to 100% of the viewport height */
+}
+
+AnimatedRoutes {
+    flex: 1 0 auto;
+    /* This ensures that the main content grows to occupy all available space */
+}
 
 
 .debug {

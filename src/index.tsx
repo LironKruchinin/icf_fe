@@ -16,9 +16,11 @@ root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <Router>
-        <AppHeader />
-        <AnimatedRoutes />
-        <AppFooter />
+        <div className="main-container">
+          <AppHeader />
+          <AnimatedRoutes />
+          <AppFooter />
+        </div>
       </Router>
     </PersistGate>
   </Provider>
