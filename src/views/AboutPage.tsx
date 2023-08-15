@@ -41,7 +41,7 @@ const AboutPage = (props: Props) => {
                 <table>
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th onClick={() => console.log('numbers')}>#</th>
                             <th>Email</th>
                             <th>First Name</th>
                             <th>Roles</th>
