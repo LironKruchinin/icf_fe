@@ -21,8 +21,8 @@ const AppHeader = () => {
             { pagePath: '/login', linkName: 'Login' },
             { pagePath: '/register', linkName: 'Register' }
         ] : [
-            { pagePath: '/logout', linkName: 'Sign out' },
             { pagePath: '/donate', linkName: 'Donate' },
+            { pagePath: '/logout', linkName: 'Sign out' },
         ]),
     ]
 
