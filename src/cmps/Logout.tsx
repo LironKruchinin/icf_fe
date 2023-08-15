@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { removeLocalStorageKey } from '../utils/localStorage'
 import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../store/store'
+import { AppDispatch, persistor } from '../store/store'
 import { logoutUser } from '../features/profileSlice'
 import LoadingSpinner from './LoadingSpinner'
 
@@ -12,7 +12,7 @@ import LoadingSpinner from './LoadingSpinner'
 const Logout = () => {
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
-    const timeout = 3000
+    const timeout = 1500
 
     useEffect(() => {
         signOut()
@@ -27,6 +27,7 @@ const Logout = () => {
         Cookies.remove('accessToken')
         removeLocalStorageKey('accessToken')
         dispatch(logoutUser())
+        persistor.purge()
         setTimeout(() => {
             navigate('/')
         }, timeout);
