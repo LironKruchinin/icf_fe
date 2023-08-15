@@ -55,9 +55,7 @@ const userSlice = createSlice({
             state.data = action.payload
         },
         logoutUser: (state) => {
-            state.isAuthenticated = false
-            state.data = null
-            state.fetched = false  // Reset fetched to false on logout
+            return initialState
         }
     },
     extraReducers(builder) {
