@@ -83,16 +83,31 @@ const HomePage = () => {
         }
 
         const mainScreenBoxes = boxes.map((box, index) => {
-
+            const userData = screenState.data
             const renderContent = () => {
-                if (screenState.data) {
+                if (userData) {
                     if (box.buttonText === 'Sign Up') {
-                        box.boxText = `
-                        <h2>View !</h2>
+                        if (userData?.roles?.length === 1) {
+                            box.boxText = `
+                        <h2>Join now!</h2>
                         <span>Connect, Engage, and Explore with Like-minded Individuals</span>
                         `
-                        box.buttonText = ''
-                        box.buttonLink = ''
+                            box.buttonText = 'Submit an application'
+                            box.buttonLink = '/application'
+                        } else {
+                            userData?.roles?.map((role, index) => {
+                                if (role === 'admin' || role === 'owner') {
+                                    box.boxText = `
+                                    <h2>Dashboard Overview</h2>
+                                    <span>Provide a brief overview of the website's current status, such as the number of active members,
+                                    recent activities, and upcoming events.</span>
+                                    `
+                                    box.buttonText = 'View Analytics'
+                                    box.buttonLink = '/admin-panel'
+                                }
+
+                            })
+                        }
                     }
 
                 }
