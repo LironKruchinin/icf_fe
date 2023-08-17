@@ -12,7 +12,6 @@ import { Boxes } from '../interface/HomePage'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../store/store'
 import { useEffect } from 'react'
-import { apiPostRequest } from '../services/api'
 import Cookies from 'js-cookie'
 import { loginUser } from '../features/profileSlice'
 
@@ -83,30 +82,65 @@ const HomePage = () => {
         }
 
         const mainScreenBoxes = boxes.map((box, index) => {
-            const userData = screenState.data
+            const userData = screenState?.data
+            const userRoles = userData?.roles
             const renderContent = () => {
                 if (userData) {
                     if (box.buttonText === 'Sign Up') {
-                        if (userData?.roles?.length === 1) {
+                        if (userRoles?.length === 1) {
                             box.boxText = `
-                        <h2>Join now!</h2>
-                        <span>Connect, Engage, and Explore with Like-minded Individuals</span>
-                        `
+                            <h2>Join now!</h2>
+                            <span>Connect, Engage, and Explore with Like-minded Individuals</span>
+                            `
                             box.buttonText = 'Submit an application'
                             box.buttonLink = '/application'
                         } else {
-                            userData?.roles?.map((role, index) => {
-                                if (role === 'admin' || role === 'owner') {
-                                    box.boxText = `
+                            if (userRoles?.includes('owner') || userRoles?.includes('admin')) {
+                                box.boxText = `
                                     <h2>Dashboard Overview</h2>
                                     <span>Provide a brief overview of the website's current status, such as the number of active members,
                                     recent activities, and upcoming events.</span>
                                     `
-                                    box.buttonText = 'View Analytics'
-                                    box.buttonLink = '/admin-panel'
-                                }
+                                box.buttonText = 'View Analytics'
+                                box.buttonLink = '/admin-panel'
+                            }
+                        }
+                    }
 
-                            })
+                    if (box.buttonText === 'Explore Events') {
+                        if (userRoles?.length !== 1) {
+                            if (userRoles?.includes('owner') || userRoles?.includes('admin')) {
+                                box.boxText = `
+                                    <h2>Event Management!</h2>
+                                    <span>Connect, Engage, and Explore with Like-minded Individuals</span>
+                                    `
+                                box.buttonText = 'Create Events'
+                                box.buttonLink = '/application'
+                            }
+                        }
+                    }
+                    if (box.buttonText === 'Help Us Grow') {
+                        if (userRoles?.length !== 1) {
+                            if (userRoles?.includes('owner') || userRoles?.includes('admin')) {
+                                box.boxText = `
+                                    <h2>Donations Tracking</h2>
+                                    <span>Connect, Engage, and Explore with Like-minded Individuals</span>
+                                    `
+                                box.buttonText = 'Manage Donations'
+                                box.buttonLink = '/application'
+                            }
+                        }
+                    }
+                    if (box.buttonText === 'Learn More') {
+                        if (userRoles?.length !== 1) {
+                            if (userRoles?.includes('owner') || userRoles?.includes('admin')) {
+                                box.boxText = `
+                                <h2>User Management</h2>
+                                <span>Connect, Engage, and Explore with Like-minded Individuals</span>
+                                `
+                                box.buttonText = 'Manage Users'
+                                box.buttonLink = '/admin-panel'
+                            }
                         }
                     }
 
