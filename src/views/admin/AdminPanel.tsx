@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState } from '../store/store'
+import { RootState } from '../../store/store'
 import { useNavigate } from 'react-router-dom'
 
 type Props = {}
@@ -14,7 +14,6 @@ const AdminPanel = (props: Props) => {
 
             if (!isAdminOrOwner) navigate('/no-permission')
         } else { navigate('/no-permission') }
-        // console.log(userData?.roles)
 
         return () => {
 
@@ -23,7 +22,11 @@ const AdminPanel = (props: Props) => {
 
 
     return (
-        <div>AdminPanel</div>
+        <div>
+            <div>userManagement</div>
+            <div>missionManagement</div>
+            <div>statistics</div>
+        </div>
     )
 }
 

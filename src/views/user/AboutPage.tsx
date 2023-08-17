@@ -1,13 +1,12 @@
 import { motion } from 'framer-motion'
-import React, { useEffect, useState } from 'react'
-import { apiPostRequest } from '../services/api'
-import { UserData } from '../interface/User'
-import ClanExplenation from '../cmps/ClanExplenation'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ClanExplenation from '../../cmps/ClanExplenation'
+import { UserData } from '../../interface/User'
+import { apiGetRequest } from '../../services/api'
 
-type Props = {}
 
-const AboutPage = (props: Props) => {
+const AboutPage = () => {
     const [users, setUsers] = useState<[UserData]>()
     const navigate = useNavigate()
 
@@ -16,13 +15,20 @@ const AboutPage = (props: Props) => {
     The unit simulates the diverse capabilities within the IDF and maintains a very high level of professionalism while performing various tasks and training. Our unit has real operators who in their daily lives are engaged in the fields of warfare in the IDF and gives thier point of view and diversity to the tasks from their personal experience during their time as fighters.
     In our clan, we emphasize an immersive experience that gives the sense of reality in battle and lets the player enter a combative character whether in communication or in actions.`
     const paragraphTitle = 'Embark on an Authentic Battlefield Journey with Our IDF-Inspired Clan!'
+
     useEffect(() => {
         getUsers()
     }, [])
 
     const getUsers = async () => {
-        const users = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/users`, [])
-        setUsers(users)
+        try {
+            const users = await apiGetRequest(`${process.env.REACT_APP_LOCAL_API_URL}/users`, [{}])
+            setUsers(users)
+        } catch (err) {
+            throw err
+        }
+        console.log('users', users);
+
     }
 
     const navigateToProfile = (id: string | null) => {
