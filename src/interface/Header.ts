@@ -1,4 +1,4 @@
 export interface Links {
     pagePath: string;
-    linkName: string;
+    linkName: any;
 }[]
