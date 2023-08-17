@@ -15,3 +15,21 @@ export const apiPostRequest = async (endpoint: string, data: object = {}, header
         throw error;
     }
 };
+
+export const apiGetRequest = async (endpoint: string, headerProperties: object = {}) => {
+    try {
+        const response = await axios.get(endpoint, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headerProperties
+            },
+            withCredentials: true
+        });
+        console.log(response);
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
