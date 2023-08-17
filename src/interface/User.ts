@@ -9,4 +9,5 @@ export interface UserData {
     updated_at: number | null;
     salt: string | null;
     roles: [string] | null;
+    gameRole: [string] | null;
 }[]
