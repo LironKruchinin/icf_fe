@@ -1,20 +1,20 @@
 import { motion } from 'framer-motion'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import LoadingSpinner from '../cmps/LoadingSpinner'
+import { loginUser } from '../features/profileSlice'
 import { LoginFormData } from '../interface/Login'
 import { apiPostRequest } from '../services/api'
-import { setLocalStorage } from '../utils/localStorage'
-import { useNavigate } from 'react-router-dom'
-import { fetchUserData, loginUser } from '../features/profileSlice'
-import { AppDispatch, RootState } from '../store/store'
-import { useDispatch, useSelector } from 'react-redux'
-import LoadingSpinner from '../cmps/LoadingSpinner'
+import { AppDispatch } from '../store/store'
 import { setCookie } from '../utils/Cookie'
+import { setLocalStorage } from '../utils/localStorage'
 
 
 const LoginPage = () => {
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
-    const screenState = useSelector((state: RootState) => state.userProfile)
+    // const screenState = useSelector((state: RootState) => state.userProfile)
     const [isLoading, setIsLoading] = useState(false)
     const [formData, setFormData] = useState<LoginFormData>({
         email: '',
@@ -34,14 +34,14 @@ const LoginPage = () => {
             email: '',
             password: ''
         })
-        const { access_token } = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/login`, formData)
+        const { access_token, user } = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/login`, formData)
         setLocalStorage('accessToken', JSON.stringify(access_token))
-        dispatch(loginUser(formData.email))
+        dispatch(loginUser(user))
         setCookie('accessToken', access_token, 3)
         console.log(access_token);
 
         if (access_token) {
-            dispatch(fetchUserData(formData.email))
+            // dispatch(fetchUserData(formData.email))
             navigate('/')
             setIsLoading(false)
         } else {
