@@ -1,7 +1,7 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion'
-import AboutPage from '../views/AboutPage';
-import ContactPage from '../views/ContactPage';
+import AboutPage from '../views/user/AboutPage';
+import ContactPage from '../views/user/ContactPage';
 import HomePage from '../views/HomePage';
 import LoginPage from '../views/LoginPage';
 import RegisterPage from '../views/RegisterPage';
@@ -12,11 +12,11 @@ import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { AppDispatch, RootState } from '../store/store';
 import PageNotFound from '../views/PageNotFound';
-import EventsPage from '../views/EventsPage';
-import DonationPage from '../views/DonationPage';
+import EventsPage from '../views/user/EventsPage';
+import DonationPage from '../views/user/DonationPage';
 import ProfilePage from '../views/ProfilePage';
-import ApplicationPage from '../views/ApplicationPage';
-import AdminPanel from '../views/AdminPanel';
+import ApplicationPage from '../views/user/ApplicationPage';
+import AdminPanel from '../views/admin/AdminPanel';
 import NoPermissionPage from '../views/NoPermissionPage';
 
 const AnimatedRoutes = () => {
