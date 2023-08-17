@@ -1,35 +1,31 @@
 import axios from 'axios';
 
-export const apiPostRequest = async (endpoint: string, data: object = {}, headerProperties: object = {}) => {
+export const apiRequest = async (
+    method: 'GET' | 'POST' = 'GET',
+    endpoint: string,
+    data: object = {}, headerProperties: object = {}
+) => {
     try {
-        const response = await axios.post(endpoint, data, {
+        let response
+        const config = {
             headers: {
                 'Content-Type': 'application/json',
                 ...headerProperties
             },
             withCredentials: true
-        });
+        }
 
+        if (method === 'POST') {
+            response = await axios.post(endpoint, data, config)
+        } else {
+            response = await axios.get(endpoint, data)
+        }
         return response.data;
-    } catch (error) {
+    }
+
+
+    catch (error) {
         throw error;
     }
-};
-
-export const apiGetRequest = async (endpoint: string, headerProperties: object = {}) => {
-    try {
-        const response = await axios.get(endpoint, {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headerProperties
-            },
-            withCredentials: true
-        });
-        console.log(response);
-
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
+}
 

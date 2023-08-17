@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { apiPostRequest } from '../services/api';
+import { apiRequest } from '../services/api';
 import { getCookie } from '../utils/Cookie';
 import { UserData } from '../interface/User';
 
@@ -18,7 +18,7 @@ const ProfilePage = (props: Props) => {
     }, [])
 
     const getUserProfile = async () => {
-        const selectedUser = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/profile/${id}`)
+        const selectedUser = await apiRequest('POST', `${process.env.REACT_APP_LOCAL_API_URL}/profile/${id}`)
         console.log(selectedUser)
 
         setUser(selectedUser)

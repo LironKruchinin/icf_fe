@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import LoadingSpinner from '../cmps/LoadingSpinner'
 import { loginUser } from '../features/profileSlice'
 import { LoginFormData } from '../interface/Login'
-import { apiPostRequest } from '../services/api'
+import { apiRequest } from '../services/api'
 import { AppDispatch } from '../store/store'
 import { setCookie } from '../utils/Cookie'
 import { setLocalStorage } from '../utils/localStorage'
@@ -34,7 +34,7 @@ const LoginPage = () => {
             email: '',
             password: ''
         })
-        const { access_token, user } = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/login`, formData)
+        const { access_token, user } = await apiRequest('POST', `${process.env.REACT_APP_LOCAL_API_URL}/login`, formData)
         setLocalStorage('accessToken', JSON.stringify(access_token))
         dispatch(loginUser(user))
         setCookie('accessToken', access_token, 3)

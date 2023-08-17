@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ClanExplenation from '../../cmps/ClanExplenation'
 import { UserData } from '../../interface/User'
-import { apiGetRequest } from '../../services/api'
+import { apiRequest } from '../../services/api'
 
 
 const AboutPage = () => {
@@ -22,7 +22,7 @@ const AboutPage = () => {
 
     const getUsers = async () => {
         try {
-            const users = await apiGetRequest(`${process.env.REACT_APP_LOCAL_API_URL}/users`, [{}])
+            const users = await apiRequest('GET', `${process.env.REACT_APP_LOCAL_API_URL}/users`)
             setUsers(users)
         } catch (err) {
             throw err

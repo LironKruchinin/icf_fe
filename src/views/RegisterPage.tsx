@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { HiOutlineEye, HiOutlineEyeSlash } from "react-icons/hi2";
 import { RegisterFormData } from '../interface/Register';
-import { apiPostRequest } from '../services/api';
+import { apiRequest } from '../services/api';
 import { setLocalStorage } from '../utils/localStorage';
 import { useNavigate } from 'react-router-dom';
 import { fetchUserData, loginUser } from '../features/profileSlice';
@@ -39,8 +39,8 @@ const RegisterPage = () => {
             user_name: '',
             phone_number: ''
         })
-        const data = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/register`, formData)
-        const { access_token } = await apiPostRequest(`${process.env.REACT_APP_LOCAL_API_URL}/login`, { email: formData.email, password: formData.password })
+        const data = await apiRequest('POST', `${process.env.REACT_APP_LOCAL_API_URL}/register`, formData)
+        const { access_token } = await apiRequest('POST', `${process.env.REACT_APP_LOCAL_API_URL}/login`, { email: formData.email, password: formData.password })
         dispatch(loginUser(formData.email))
         setCookie('accessToken', access_token, 3)
         setLocalStorage('accessToken', JSON.stringify(access_token))
