@@ -44,6 +44,7 @@ const HomePage = () => {
                 `,
                 buttonText: 'Sign Up',
                 buttonLink: '/register',
+                isBlackFont: true,
             },
             {
                 imageLink: icf5,
@@ -53,7 +54,7 @@ const HomePage = () => {
                 `,
                 buttonText: 'Explore Events',
                 buttonLink: '/event',
-                isBlackFont: true,
+                // isBlackFont: true,
             },
             {
                 imageLink: icf2, // Make a grid of last 4 events
@@ -63,7 +64,7 @@ const HomePage = () => {
                 `,
                 buttonText: 'Learn More',
                 buttonLink: '/about',
-                isBlackFont: true,
+                // isBlackFont: true,
             },
             {
                 imageLink: icf4,
@@ -73,7 +74,7 @@ const HomePage = () => {
                 `,
                 buttonText: 'Help Us Grow',
                 buttonLink: '/support',
-                isBlackFont: true,
+                // isBlackFont: true,
             },
         ]
 
