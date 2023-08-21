@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { AppDispatch, persistor } from '../store/store'
 import { logoutUser } from '../features/profileSlice'
 import LoadingSpinner from './LoadingSpinner'
+import { removeCookie } from '../utils/Cookie'
 
 
 const Logout = () => {
@@ -24,7 +25,7 @@ const Logout = () => {
 
 
     const signOut = () => {
-        Cookies.remove('accessToken')
+        removeCookie('accessToken')
         removeLocalStorageKey('accessToken')
         dispatch(logoutUser())
         persistor.purge()
