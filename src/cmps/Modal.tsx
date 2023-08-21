@@ -15,7 +15,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
                 <button className="modal-close-button" onClick={onClose}>
                     &times;
                 </button>
-                {children}
+                <div className='modal-children'>{children}</div>
             </div>
         </div>
     );
