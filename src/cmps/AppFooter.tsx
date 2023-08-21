@@ -67,7 +67,7 @@ const AppFooter = (props: Props) => {
                 <span>version 1.0</span>
             </div>
             <div>
-                <AiOutlineCopyrightCircle /><span>Israeli Combat Force</span>
+                <AiOutlineCopyrightCircle /><span>Israeli Combined Forces</span>
             </div>
         </footer>
     )
