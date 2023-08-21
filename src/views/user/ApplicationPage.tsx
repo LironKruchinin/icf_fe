@@ -13,39 +13,46 @@ const ApplicationPage = () => {
             entryName: 'entry.839671163',
             placeholder: 'First name',
             inputType: 'text',
-            labelText: 'hello',
+            inputId: 'first_name',
+            labelText: 'First name',
             value: userData?.first_name
         },
         {
             entryName: 'entry.798618593',
             placeholder: 'Last name',
             inputType: 'text',
-            labelText: '',
+            inputId: 'last_name',
+            labelText: 'Last name',
         },
         {
             entryName: 'entry.855053987',
             placeholder: 'Discord nickname',
             inputType: 'text',
-            labelText: '',
-            value: userData?.user_name
+            inputId: 'discord_nickname',
+            labelText: 'Discord nickname',
+            value: userData?.user_name,
+
         },
         {
             entryName: 'entry.1904768786',
             placeholder: 'Age',
             inputType: 'text',
-            labelText: '',
+            inputId: 'age',
+            labelText: 'Age',
         },
         {
             entryName: 'entry.1671175554',
             placeholder: 'Hours played',
             inputType: 'text',
-            labelText: '',
+            inputId: 'hours_played',
+            labelText: 'Hours played',
         },
         {
             entryName: 'entry.231720674',
             placeholder: 'Reason to join',
             inputType: 'text',
-            labelText: '',
+            inputId: 'join_reason',
+            labelText: 'Reason to join',
         },
         {
             entryName: 'entry.1502296283',
@@ -55,13 +62,15 @@ const ApplicationPage = () => {
                 { display: 'Yes', value: 'כן' },
                 { display: 'No', value: 'לא' },
             ],
+            inputId: 'in_clan',
             labelText: 'Were you in a previous clan?',
         },
         {
             entryName: 'entry.1759490461',
             placeholder: 'freeTime',
             inputType: 'text',
-            labelText: '',
+            inputId: 'free_time',
+            labelText: 'How much free time do you have in a week?',
         },
         {
             entryName: 'entry.6554940',
@@ -71,6 +80,7 @@ const ApplicationPage = () => {
                 { display: 'Yes', value: 'כן' },
                 { display: 'No', value: 'לא' },
             ],
+            inputId: 'friday',
             labelText: 'Do you have 3 hours to play at Friday?',
         },
     ]
@@ -92,8 +102,9 @@ const ApplicationPage = () => {
     };
 
     return (
-        <div>
+        <div className='application-container'>
             <form
+                className='application'
                 ref={formRef}
                 method="POST"
                 action="https://docs.google.com/forms/d/e/1FAIpQLSd0w2_7Buz3TcUTCnl7sA3Xc-r89dqO3ApwjCqI_8WKYjppOg/formResponse"
@@ -121,15 +132,20 @@ const ApplicationPage = () => {
                     }
 
                     return (
-                        <input
-                            key={index}
-                            className='input'
-                            type={item.inputType}
-                            name={item.entryName}
-                            placeholder={item.placeholder}
-                            value={item.value}
-                            onChange={handleInputChange}
-                        />
+                        <div key={index} className='answer-container'>
+                            <label htmlFor={item.inputId}>{item.labelText}</label>
+                            <input
+                                key={index}
+                                required
+                                id={item.inputId}
+                                className='input'
+                                type={item.inputType}
+                                name={item.entryName}
+                                placeholder={item.placeholder}
+                                value={item.value}
+                                onChange={handleInputChange}
+                            />
+                        </div>
                     );
                 })}
 
