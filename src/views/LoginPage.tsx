@@ -1,14 +1,13 @@
 import { motion } from 'framer-motion'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LoadingSpinner from '../cmps/LoadingSpinner'
 import { loginUser } from '../features/profileSlice'
 import { LoginFormData } from '../interface/Login'
 import { apiRequest } from '../services/api'
-import { AppDispatch, RootState } from '../store/store'
+import { AppDispatch } from '../store/store'
 import { setCookie } from '../utils/Cookie'
-import { setLocalStorage } from '../utils/localStorage'
 import SideDisplay from '../cmps/SideDisplay'
 
 
@@ -25,6 +24,7 @@ const LoginPage = () => {
         // isRememberPassword: false
     })
 
+
     const handleInput = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = target
         setFormData(prevState => ({ ...prevState, [name]: value }))
@@ -32,7 +32,12 @@ const LoginPage = () => {
 
     const handleSubmit = async (ev: React.FormEvent) => {
         ev.preventDefault()
-
+        Object.keys(formData).forEach((key: keyof LoginFormData) => {
+            if (formData[key] === '') {
+                setError(prevState => `${key} is Empty`)
+            }
+        })
+        if (error) return
         setIsLoading(true)
         setFormData({
             email: '',
@@ -54,11 +59,16 @@ const LoginPage = () => {
                 setIsLoading(false)
             }
         } catch (err) {
-            setError('Error logging in')
+            setError('Incorrect username or password')
         } finally {
             setIsLoading(false)
         }
+    }
 
+    const checkIfEmpty = (inputName: keyof LoginFormData) => {
+        const isEmpty = formData[inputName]
+        if (isEmpty?.toString().length > 0) return true
+        else return false
     }
 
     return (
@@ -71,31 +81,42 @@ const LoginPage = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                 >
-                    <h2 className='header-login'>Welcome!</h2>
+                    <h2 className='header-login'>Welcome back!</h2>
                     <label htmlFor="email">Email</label>
-                    <input type="text" name="email"
-                        required
+                    <input
+                        onBlur={() => checkIfEmpty('email')}
+                        className={checkIfEmpty('email') ? 'empty' : ''}
+                        type="text"
+                        name="email"
                         id="email"
+                        autoFocus
                         onChange={handleInput}
                         placeholder='Enter your email'
                         value={formData.email} />
+
                     <label htmlFor="password">Password</label>
-                    <input type="password" name="password"
-                        required
+                    <input
+                        onBlur={() => checkIfEmpty('password')}
+                        className={checkIfEmpty('email') ? 'empty' : ''}
+                        type="password"
+                        name="password"
                         id="password"
                         onChange={handleInput}
                         placeholder='Enter your password'
                         value={formData.password} />
 
-                    <div>
-                        <input
-                            type="checkbox"
-                            name="remember-password"
-                            id="remember-password"
-                            value={formData.password}
-                            defaultChecked={isRememberPassword}
-                            onChange={() => setIsRememberPassword((prevState) => !prevState)} />
-                        <label htmlFor="remember-password">aaa</label>
+                    <div className='login-tools'>
+                        <div>
+                            <input
+                                type="checkbox"
+                                name="remember-password"
+                                id="remember-password"
+                                value={formData.password}
+                                defaultChecked={isRememberPassword}
+                                onChange={() => setIsRememberPassword((prevState) => !prevState)} />
+                            <label htmlFor="remember-password">Remember your password?</label>
+                        </div>
+                        <a href="">Forgot your password?</a>
                     </div>
                     {error && <p className="error-message">{error}</p>}
                     <button>Log in</button>
