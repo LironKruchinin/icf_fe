@@ -94,6 +94,14 @@ AnimatedRoutes {
     background-color: $black;
     color: $white;
 
+    input {
+        color: $white
+    }
+
+    button {
+        @include btn($dark-blue, $gray);
+    }
+
     .slider svg {
         color: $black !important;
     }
@@ -114,6 +122,9 @@ AnimatedRoutes {
 .light-mode {
     background-color: $white-light;
 
+    // button {
+    //     @include btn($dark-blue, $gray);
+    // }
 
     .box {
         background-color: $black;
