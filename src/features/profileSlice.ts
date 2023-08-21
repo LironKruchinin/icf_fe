@@ -30,13 +30,18 @@ interface UserProfileState {
     fetched: boolean | null
 }
 
+
 interface UserData {
     created_at: number,
+    updated_at: number;
     email: string,
     first_name: string,
     roles: [string],
     user_name: string,
-    _id: string
+    _id: string,
+    user_color: string,
+    gameRole: [string] | null;
+
 }
 
 
