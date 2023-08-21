@@ -116,7 +116,7 @@ const HomePage = () => {
                                     <span>Connect, Engage, and Explore with Like-minded Individuals</span>
                                     `
                                 box.buttonText = 'Create Events'
-                                box.buttonLink = '/application'
+                                box.buttonLink = '/event'
                             }
                         }
                     }
