@@ -6,9 +6,19 @@
     cursor: pointer;
     font-size: $font-size;
     font-weight: bold;
+    transition: background-color .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     font-family: NunitoB, 'Courier New', Courier, monospace;
 
     &:hover {
         background-color: $hover-color;
     }
+}
+
+@mixin inpt () {
+    border: $gray 1px solid;
+    background-color: transparent;
+    border-radius: 5px;
+    height: em(50px);
+    font-size: 16px;
+    padding-left: 15px;
 }
