@@ -6,9 +6,10 @@ export const fetchUserData = createAsyncThunk('userData/post', async (
     email: string | undefined) => {
     try {
         const accessToken = getLocalStorage('accessToken')
+
         const data = await apiRequest(
             'POST',
-            `${process.env.REACT_APP_LOCAL_API_URL}/profile`,
+            `${process.env.REACT_APP_LOCAL_API_URL}/auth/profile`,
             { email: email },
             { Authorization: `Bearer ${JSON.parse(accessToken)}` })
 
