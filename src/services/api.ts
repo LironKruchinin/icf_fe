@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const apiRequest = async (
-    method: 'GET' | 'POST' = 'GET',
+    method: 'DELETE' | 'GET' | 'POST' | 'PATCH',
     endpoint: string,
     data: object = {}, headerProperties: object = {}
 ) => {
@@ -15,11 +15,25 @@ export const apiRequest = async (
             withCredentials: true
         }
 
-        if (method === 'POST') {
-            response = await axios.post(endpoint, data, config)
-        } else {
-            response = await axios.get(endpoint, data)
+        switch (method) {
+            case 'POST':
+                response = await axios.post(endpoint, data, config)
+                break;
+            case 'GET':
+                response = await axios.get(endpoint, data)
+                break;
+            case 'DELETE':
+                response = await axios.delete(endpoint, data)
+                break;
+            case 'PATCH':
+                response = await axios.patch(endpoint, data, config)
+                break;
+
+            default:
+                response = await axios.get(endpoint, data)
+                break;
         }
+
         return response.data;
     }
 
