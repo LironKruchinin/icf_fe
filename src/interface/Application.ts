@@ -17,6 +17,7 @@ export interface FormEntries {
     radioOptions?: Options[];
     labelText: string;
     radioButtons?: any;
+    inputId?: string;
     value?: any;
 }
 
