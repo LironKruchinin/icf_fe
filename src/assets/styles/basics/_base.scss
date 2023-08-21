@@ -76,13 +76,12 @@ a {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    flex: 1;
     justify-content: space-between;
-    /* set to 100% of the viewport height */
 }
 
 AnimatedRoutes {
     flex: 1 0 auto;
-    /* This ensures that the main content grows to occupy all available space */
 }
 
 
@@ -93,6 +92,15 @@ AnimatedRoutes {
 
 .dark-mode {
     background-color: $black;
+    color: $white;
+
+    .slider svg {
+        color: $black !important;
+    }
+
+    .slider-controls svg {
+        color: $white;
+    }
 
     a {
         color: $white;
