@@ -22,12 +22,11 @@ const AboutPage = () => {
 
     const getUsers = async () => {
         try {
-            const users = await apiRequest('GET', `${process.env.REACT_APP_LOCAL_API_URL}/users`)
+            const users = await apiRequest('GET', `${process.env.REACT_APP_LOCAL_API_URL}/auth/users`)
             setUsers(users)
         } catch (err) {
             throw err
         }
-        console.log('users', users);
 
     }
 
@@ -36,7 +35,8 @@ const AboutPage = () => {
     }
 
     return (
-        <motion.div initial={{ opacity: 0 }}
+        <motion.div
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className='about-page'
