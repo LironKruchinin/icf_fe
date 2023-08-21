@@ -5,13 +5,16 @@ import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import icfImage from '../assets/images/icf_logo.png';
 import { Links } from '../interface/Header';
-import { RootState } from '../store/store';
+import { RootState, persistor } from '../store/store';
 import { getLocalStorage, setLocalStorage } from '../utils/localStorage';
 import ToggleSwitch from './ToggleSwitch';
+import { getCookie, removeCookie } from '../utils/Cookie';
+import { logoutUser } from '../features/profileSlice';
 
 const AppHeader = () => {
     const [isDarkmode, setIsDarkMode] = useState<boolean | null>(getLocalStorage('isDarkMode'))
     const screenState = useSelector((state: RootState) => state.userProfile)
+    const hasAuthCookie = getCookie('accessToken')
     const links: Links[] = [
         ...(screenState.isAuthenticated ? [
             { pagePath: `/profile/${screenState.data?._id}`, linkName: <BsPersonCircle /> },
