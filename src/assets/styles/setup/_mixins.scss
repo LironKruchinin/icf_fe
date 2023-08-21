@@ -1,8 +1,9 @@
-@mixin btn($hover-color: $white, $font-size: 20px) {
-    background-color: transparent;
+@mixin btn($hover-color: $white, $text-color: $black, $font-size: 20px) {
+    background-color: transparentize($color: $hover-color, $amount: 0.7);
     border: 1px solid $gray;
     border-radius: 30px;
     padding: 12px 35px;
+    color: $text-color;
     cursor: pointer;
     font-size: $font-size;
     font-weight: bold;
@@ -22,3 +23,5 @@
     font-size: 16px;
     padding-left: 15px;
 }
+
+@mixin radioBtn () {}
