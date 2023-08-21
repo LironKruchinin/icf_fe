@@ -110,24 +110,30 @@ main {
 
 // display modes
 .box.dark-mode {
-
-    button {
-        @include btn($dark-blue);
-        color: $white;
-        border: 1px solid $blue !important;
-    }
-
-    color: $white;
-}
-
-.box.light-mode {
     .box {
         background-color: $black;
 
     }
 
     button {
+        @include btn($dark-blue);
+        color: $white;
+    }
+
+    color: $black;
+}
+
+.box.light-mode {
+    .box {
+        background-color: $white;
+
+    }
+
+    button {
         @include btn($white);
+        color: $black;
         border: 1px solid $blue !important;
     }
+
+    color: $white;
 }
