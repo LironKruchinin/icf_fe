@@ -19,7 +19,6 @@ const App = () => {
     const millDay = 86400000
 
     useEffect(() => {
-        console.log(eventData)
         getEvents()
     }, [eventData])
 
@@ -104,7 +103,7 @@ const App = () => {
     const closeModal = () => {
         setIsModalOpen(false)
         if (isModalOpen) setIsModalOpen(false)
-        else if (isDeleteModalOpen) setIsDeleteModalOpen
+        else if (isDeleteModalOpen) setIsDeleteModalOpen(false)
     }
 
     return (
