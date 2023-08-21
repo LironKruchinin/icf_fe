@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type CalendarProps = {
-    endDate: any
+    handleEvent: any;
+    isRequired: boolean
+    children: ReactNode
 }
 
-const Calendar: React.FC<CalendarProps> = ({ endDate }) => {
+const Calendar: React.FC<CalendarProps> = ({ handleEvent, isRequired, children }) => {
     return (
         <div>
-            <span>Pick an end date
-                <input type="date" name="" id="" onChange={(ev) => endDate(ev)} />
-            </span>
+            {children}
+            <input
+                type="date"
+                name="eventDate"
+                id="calendar"
+                required={isRequired}
+                onChange={(ev) => handleEvent(ev)} />
         </div>
     )
 }
