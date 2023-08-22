@@ -18,7 +18,7 @@ import { loginUser } from '../features/profileSlice'
 const HomePage = () => {
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
-    const screenState = useSelector((state: RootState) => state.userProfile);
+    const screenState = useSelector((state: RootState) => state.profile);
 
     useEffect(() => {
         const token = Cookies.get('accessToken')
@@ -53,7 +53,7 @@ const HomePage = () => {
                 <span>Stay in the loop with our exciting events!</span>
                 `,
                 buttonText: 'Explore Events',
-                buttonLink: '/event',
+                buttonLink: '/mission',
                 // isBlackFont: true,
             },
             {
@@ -116,7 +116,7 @@ const HomePage = () => {
                                     <span>Connect, Engage, and Explore with Like-minded Individuals</span>
                                     `
                                 box.buttonText = 'Create Events'
-                                box.buttonLink = '/event'
+                                box.buttonLink = '/mission'
                             }
                         }
                     }

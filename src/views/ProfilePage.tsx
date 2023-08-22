@@ -18,11 +18,7 @@ const ProfilePage = (props: Props) => {
     }, [])
 
     const getUserProfile = async () => {
-        console.log(process.env.REACT_APP_LOCAL_API_URL);
-
         const selectedUser = await apiRequest('GET', `${process.env.REACT_APP_LOCAL_API_URL}/auth/profile/${id}`)
-        console.log(selectedUser)
-
         setUser(selectedUser)
     }
 

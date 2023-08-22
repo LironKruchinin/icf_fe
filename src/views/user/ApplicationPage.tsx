@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
 const ApplicationPage = () => {
-    const userData = useSelector((state: RootState) => state.userProfile.data)
+    const userData = useSelector((state: RootState) => state.profile.data)
     const navigate = useNavigate()
     const formRef = useRef<HTMLFormElement>(null!);
     const [formData, setFormData] = useState({})

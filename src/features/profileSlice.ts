@@ -1,17 +1,18 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { apiRequest } from '../services/api';
 import { getLocalStorage } from '../utils/localStorage';
+import { getCookie } from '../utils/Cookie';
 
 export const fetchUserData = createAsyncThunk('userData/post', async (
     email: string | undefined) => {
     try {
-        const accessToken = getLocalStorage('accessToken')
+        const accessToken = getCookie('accessToken')
 
         const data = await apiRequest(
             'POST',
             `${process.env.REACT_APP_LOCAL_API_URL}/auth/profile`,
             { email: email },
-            { Authorization: `Bearer ${JSON.parse(accessToken)}` })
+            { Authorization: `Bearer ${accessToken}` })
 
         return data
     }

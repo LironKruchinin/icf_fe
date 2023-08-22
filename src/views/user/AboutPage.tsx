@@ -51,6 +51,7 @@ const AboutPage = () => {
                             <th>Email</th>
                             <th>First Name</th>
                             <th>Roles</th>
+                            <th>Game roles</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,6 +61,7 @@ const AboutPage = () => {
                                 <td>{user.email}</td>
                                 <td>{user.first_name}</td>
                                 <td>{user.roles?.join(', ')}</td>
+                                <td>{user.gameRole?.join(', ')}</td>
                             </tr>
                         ))}
                     </tbody>

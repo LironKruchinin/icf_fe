@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 type Props = {}
 
 const AdminPanel = (props: Props) => {
-    const userData = useSelector((state: RootState) => state.userProfile.data)
+    const userData = useSelector((state: RootState) => state.profile.data)
     const navigate = useNavigate()
     useEffect(() => {
         if (userData) {
