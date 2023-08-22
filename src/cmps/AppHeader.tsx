@@ -16,7 +16,7 @@ import LoadingSpinner from './LoadingSpinner';
 const AppHeader = () => {
     const dispatch: AppDispatch = useDispatch();
     const [isDarkmode, setIsDarkMode] = useState<boolean | null>(getLocalStorage('isDarkMode'))
-    const screenState = useSelector((state: RootState) => state.userProfile)
+    const screenState = useSelector((state: RootState) => state.profile)
     const [isLoggingOut, setIsLoggingOut] = useState(false)
     const hasAuthCookie = getCookie('accessToken')
     const timeout = 1000
@@ -40,6 +40,8 @@ const AppHeader = () => {
 
     useEffect(() => {
         document.body.className = isDarkmode ? 'dark-mode' : 'light-mode'
+        console.log(screenState);
+
     }, [isDarkmode, screenState])
 
     const toggleDarkMode = (isOn: boolean) => {

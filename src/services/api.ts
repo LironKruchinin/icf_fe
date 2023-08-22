@@ -17,6 +17,8 @@ export const apiRequest = async (
 
         switch (method) {
             case 'POST':
+                console.log(config);
+
                 response = await axios.post(endpoint, data, config)
                 break;
             case 'GET':
