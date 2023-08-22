@@ -84,6 +84,13 @@ AnimatedRoutes {
     flex: 1 0 auto;
 }
 
+.error-message {
+    font-family: OswaldB;
+    color: red;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center;
+}
 
 .debug {
     outline: 1px solid red;
@@ -96,10 +103,6 @@ AnimatedRoutes {
 
     input {
         color: $white
-    }
-
-    button {
-        @include btn($dark-blue, $gray);
     }
 
     .slider svg {
