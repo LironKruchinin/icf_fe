@@ -1,0 +1,11 @@
+{
+    "header": {
+        "donate": "Donate",
+        "about": "About",
+        "contact": "Contact",
+        "login": "Login",
+        "register": "Register",
+        "panel": "Panel",
+        "signOut": "Sign out"
+    }
+}
