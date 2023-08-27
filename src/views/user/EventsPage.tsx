@@ -7,52 +7,54 @@ import { getLocalStorage } from '../../utils/localStorage';
 import { getCookie } from '../../utils/Cookie';
 import { BsPen } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
+import { UserData } from '../../interface/User';
 
-const App = () => {
-    const navigate = useNavigate();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isEdit, setIsEdit] = useState(false);
-    const [error, setError] = useState<string | null>();
-    const [events, setEvents] = useState<EventData[]>([]);
+const EventsPage = () => {
+    const navigate = useNavigate()
+    // const [usersForEvent, setUsersForEvent] = useState<UserData[]>([])
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isEdit, setIsEdit] = useState(false)
+    const [error, setError] = useState<string | null>()
+    const [events, setEvents] = useState<EventData[]>([])
     const [eventData, setEventData] = useState<EventData>({
         eventName: '',
         eventDescription: '',
         eventDate: 0,
         eventCloseDate: 0,
         createdAt: 0
-    });
+    })
 
-    const millDay = 86400000;
+    const millDay = 86400000
 
     useEffect(() => {
-        getEvents();
-    }, [eventData]);
+        getEvents()
+    }, [eventData])
 
     const getEvents = async () => {
-        const events = await apiRequest('GET', `${process.env.REACT_APP_LOCAL_API_URL}/event`);
-        setEvents(events);
+        const events = await apiRequest('GET', `${process.env.REACT_APP_LOCAL_API_URL}/event`)
+        setEvents(events)
     }
 
     const handleEvent = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-        const { value, name } = target;
+        const { value, name } = target
         if (name === 'eventDate') {
-            const finalDate = Date.parse(value);
-            const closeFormDate = finalDate - millDay;
-            setEventData(prevState => ({ ...prevState, 'eventDate': finalDate, 'eventCloseDate': closeFormDate }));
+            const finalDate = Date.parse(value)
+            const closeFormDate = finalDate - millDay
+            setEventData(prevState => ({ ...prevState, 'eventDate': finalDate, 'eventCloseDate': closeFormDate }))
         } else {
-            setEventData(prevState => ({ ...prevState, [name]: value }));
+            setEventData(prevState => ({ ...prevState, [name]: value }))
         }
     }
 
     const submitEvent = async (ev: React.FormEvent) => {
-        ev.preventDefault();
-        const accessToken = getCookie('accessToken');
-        const daysLeft = Math.ceil((eventData.eventDate - Date.now()) / millDay);
-        eventData.createdAt = Date.now();
+        ev.preventDefault()
+        const accessToken = getCookie('accessToken')
+        const daysLeft = Math.ceil((eventData.eventDate - Date.now()) / millDay)
+        eventData.createdAt = Date.now()
 
         if (daysLeft < 2) {
-            setError('Mission too close');
-            return;
+            setError('Mission too close')
+            return
         }
 
         try {
@@ -62,74 +64,75 @@ const App = () => {
                     `${process.env.REACT_APP_LOCAL_API_URL}/event/${eventData._id}`,
                     eventData,
                     { Authorization: `Bearer ${accessToken}` }
-                );
+                )
             } else {
                 await apiRequest(
                     'POST',
                     `${process.env.REACT_APP_LOCAL_API_URL}/event`,
                     eventData,
                     { Authorization: `Bearer ${accessToken}` }
-                );
+                )
             }
-            getEvents();  // Reload events after updating or adding
+            getEvents()
         } catch (err) {
-            console.error("Error:", err);
+            console.error("Error:", err)
         } finally {
-            closeModal();
+            closeModal()
         }
     }
 
-    const deleteEvent = async (id: string | undefined) => {
-        const deletedEventIndex = events.findIndex(event => event._id === id);
-        const deletedEvent = events[deletedEventIndex];
+    const deleteEvent = async (ev: React.MouseEvent<HTMLButtonElement>, id: string | undefined) => {
+        ev.stopPropagation()
+        const deletedEventIndex = events.findIndex(event => event._id === id)
+        const deletedEvent = events[deletedEventIndex]
         try {
             if (deletedEventIndex !== -1) {
-                const newEvents = events.filter(event => event._id !== id);
-                setEvents(newEvents);
-                await apiRequest('DELETE', `${process.env.REACT_APP_LOCAL_API_URL}/event/${id}`);
+                const newEvents = events.filter(event => event._id !== id)
+                setEvents(newEvents)
+                await apiRequest('DELETE', `${process.env.REACT_APP_LOCAL_API_URL}/event/${id}`)
             }
         } catch (err) {
-            console.error("Error deleting event:", err);
+            console.error("Error deleting event:", err)
             if (deletedEventIndex !== -1) {
                 setEvents(prevEvents => {
-                    const updatedEvents = [...prevEvents];
-                    updatedEvents.splice(deletedEventIndex, 0, deletedEvent);
-                    return updatedEvents;
-                });
+                    const updatedEvents = [...prevEvents]
+                    updatedEvents.splice(deletedEventIndex, 0, deletedEvent)
+                    return updatedEvents
+                })
             }
         }
     }
 
-    const editEvent = async (id: string | undefined) => {
-        setIsEdit(true);
-        const eventToEdit = events.find(event => event._id === id);
+    const editEvent = async (ev: React.MouseEvent<HTMLButtonElement>, id: string | undefined) => {
+        ev.stopPropagation()
+        setIsEdit(true)
+        const eventToEdit = events.find(event => event._id === id)
         if (eventToEdit) {
-            setEventData(eventToEdit);
+            setEventData(eventToEdit)
         }
     }
 
-    const viewEvent = async (ev: React.MouseEvent<HTMLDivElement>, id: string | undefined) => {
-        ev.stopPropagation();
-        // navigate(`/mission/${id}`);
+    const viewEvent = async (id: string | undefined) => {
+
+        navigate(`/mission/${id}`)
     }
 
     const openModal = () => {
-        setIsModalOpen(true);
+        setIsModalOpen(true)
     }
 
     const closeModal = () => {
-        setIsModalOpen(false);
-        setIsEdit(false);
-        setError('');
+        setIsModalOpen(false)
+        setIsEdit(false)
+        setError('')
 
-        // Reset eventData state on close
         setEventData({
             eventName: '',
             eventDescription: '',
             eventDate: 0,
             eventCloseDate: 0,
             createdAt: 0,
-        });
+        })
     }
 
     return (
@@ -142,6 +145,7 @@ const App = () => {
                     <div>
                         <label htmlFor="event-name">Event name: </label>
                         <input
+                            autoFocus
                             type="text"
                             required
                             id='event-name'
@@ -151,10 +155,10 @@ const App = () => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="event-name">Event Description: </label>
+                        <label htmlFor="event-description">Event Description: </label>
                         <input
                             type="text"
-                            id='event-name'
+                            id='event-description'
                             name='eventDescription'
                             onChange={(ev) => handleEvent(ev)}
                             value={eventData.eventDescription}
@@ -169,14 +173,14 @@ const App = () => {
             )}
 
             {events?.map(event => (
-                <div key={event._id} onClick={(ev) => viewEvent(ev, event._id)}>
-                    <button onClick={() => deleteEvent(event._id)}>X</button>
+                <div key={event._id} onClick={() => viewEvent(event._id)}>
+                    <button onClick={(ev) => deleteEvent(ev, event._id)}>X</button>
                     <span>{event.eventName}</span>
-                    <button onClick={() => editEvent(event._id)}><BsPen /></button>
+                    <button onClick={(ev) => editEvent(ev, event._id)}><BsPen /></button>
                 </div>
             ))}
         </div>
-    );
+    )
 }
 
-export default App;
+export default EventsPage
