@@ -14,14 +14,12 @@ import SideDisplay from '../cmps/SideDisplay'
 const LoginPage = () => {
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
-    // const screenState = useSelector((state: RootState) => state)
     const [error, setError] = useState<string | null>()
     const [isLoading, setIsLoading] = useState(false)
     const [isRememberPassword, setIsRememberPassword] = useState(false)
     const [formData, setFormData] = useState<LoginFormData>({
         email: '',
         password: '',
-        // isRememberPassword: false
     })
 
 
@@ -37,12 +35,11 @@ const LoginPage = () => {
                 setError(prevState => `${key} is Empty`)
             }
         })
-        if (error) return
+
         setIsLoading(true)
         setFormData({
             email: '',
             password: '',
-            // isRememberPassword: false
         })
         try {
             const { access_token, user } = await apiRequest(
@@ -51,7 +48,7 @@ const LoginPage = () => {
                 formData)
             dispatch(loginUser(user))
 
-            if (isRememberPassword) setCookie('accessToken', access_token, 3)
+            if (isRememberPassword) setCookie('accessToken', access_token, 9)
             else setCookie('accessToken', access_token)
 
             if (access_token) {
@@ -114,7 +111,6 @@ const LoginPage = () => {
                                 type="checkbox"
                                 name="remember-password"
                                 id="remember-password"
-                                value={formData.password}
                                 defaultChecked={isRememberPassword}
                                 onChange={() => setIsRememberPassword((prevState) => !prevState)} />
                             <label htmlFor="remember-password">Remember your password?</label>
