@@ -53,7 +53,7 @@ const RegisterPage = () => {
             const data = await apiRequest('POST', `${process.env.REACT_APP_LOCAL_API_URL}/auth/register`, formData)
             const { access_token } = await apiRequest('POST', `${process.env.REACT_APP_LOCAL_API_URL}/auth/login`, { email: formData.email, password: formData.password })
             dispatch(loginUser(formData.email))
-            setCookie('accessToken', access_token, 3)
+            setCookie('accessToken', access_token, 2)
             // setLocalStorage('accessToken', JSON.stringify(access_token))
             if (access_token) {
                 dispatch(fetchUserData(formData.email))
