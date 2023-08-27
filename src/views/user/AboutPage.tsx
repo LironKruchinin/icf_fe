@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import ClanExplenation from '../../cmps/ClanExplenation'
 import { UserData } from '../../interface/User'
 import { apiRequest } from '../../services/api'
+import { BsPen } from 'react-icons/bs'
 
 
 const AboutPage = () => {
