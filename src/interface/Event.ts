@@ -5,7 +5,7 @@ export interface EventData {
     eventName: string;
     eventDescription: string;
     eventDate: number;
-    eventCloseDate: number;
-    createdAt: number;
+    eventCloseDate?: number;
+    createdAt?: number;
     users?: UserData[];
 }
