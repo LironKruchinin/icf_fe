@@ -53,7 +53,6 @@ const AppHeader = () => {
         document.body.className = isDarkmode ? 'dark-mode' : 'light-mode'
 
         document.addEventListener("visibilitychange", () => {
-            console.log('authCookie', authCookie);
             if (!document.hidden) {
                 checkCookieExpiration()
             }
