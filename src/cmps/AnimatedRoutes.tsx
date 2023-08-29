@@ -16,8 +16,10 @@ import AboutPage from '../views/user/AboutPage';
 import ApplicationPage from '../views/user/ApplicationPage';
 import ContactPage from '../views/user/ContactPage';
 import DonationPage from '../views/user/DonationPage';
-import EventsPage from '../views/user/EventsPage';
+import EventsPage from '../views/EventsPage';
 import MissionPage from '../views/MissionPage';
+import GroupPage from '../views/GroupPage';
+import RolePage from '../views/RolePage';
 
 const AnimatedRoutes = () => {
     const location = useLocation()
@@ -45,11 +47,13 @@ const AnimatedRoutes = () => {
                 <Route path='/profile/:id' element={<ProfilePage />} />
                 <Route path='/mission/:id' element={<MissionPage />} />
                 <Route path='/application' element={<ApplicationPage />} />
+                <Route path='/admin-panel' element={<AdminPanel />} />
+                <Route path='/group' element={<GroupPage />} />
+                <Route path='/role' element={<RolePage />} />
                 <Route path='/login' element={<LoginPage />} />
                 <Route path='/register' element={<RegisterPage />} />
                 <Route path='/about' element={<AboutPage />} />
                 <Route path='/contact' element={<ContactPage />} />
-                <Route path='/admin-panel' element={<AdminPanel />} />
                 <Route path='/mission' element={<EventsPage />} />
                 <Route path='/support' element={<DonationPage />} />
                 <Route path='/no-permission' element={<NoPermissionPage />} />
