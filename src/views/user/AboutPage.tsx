@@ -8,7 +8,9 @@ import { BsPen } from 'react-icons/bs'
 
 
 const AboutPage = () => {
-    const [users, setUsers] = useState<[UserData]>()
+    const [users, setUsers] = useState<UserData[]>([])
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    const [sortColumn, setSortColumn] = useState<'index' | 'email' | 'first_name' | 'roles' | 'gameRole'>('index');
     const navigate = useNavigate()
 
     const paragraphText = `We are a clan that focuses on realism while trying to gain experiences vibe and to make fun at the same time. 
@@ -35,6 +37,19 @@ const AboutPage = () => {
         navigate(`/profile/${id}`)
     }
 
+    const editUser = (ev: React.MouseEvent<HTMLButtonElement>, userId: string | null) => {
+        ev.stopPropagation()
+    }
+
+    const handleSort = (column: 'index' | 'email' | 'first_name' | 'roles' | 'gameRole') => {
+        if (column === sortColumn) {
+            setSortDirection(prevDirection => prevDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortColumn(column);
+            setSortDirection('asc');
+        }
+    }
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -48,28 +63,41 @@ const AboutPage = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th onClick={() => console.log('numbers')}>#</th>
-                            <th>Email</th>
-                            <th>First Name</th>
+                            <th onClick={() => handleSort('index')}># {sortDirection === 'asc' ? '▲' : '▼'}</th>
+                            <th onClick={() => handleSort('email')} >Email  {sortDirection === 'asc' ? '▲' : '▼'}</th>
+                            <th onClick={() => handleSort('first_name')}>First Name  {sortDirection === 'asc' ? '▲' : '▼'}</th>
                             <th>Roles</th>
-                            <th>Game roles</th>
+                            <th onClick={() => handleSort('gameRole')}>Game roles  {sortDirection === 'asc' ? '▲' : '▼'}</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {users?.map((user, index) => (
-                            <tr key={user._id} onClick={() => navigateToProfile(user._id)}>
+
+                        {sortDirection === 'asc' ? users?.map((user, index) => (
+                            <tr key={user._id} onClick={() => navigateToProfile(user?._id)}>
                                 <td>{index + 1}</td>
                                 <td>{user.email}</td>
                                 <td>{user.first_name}</td>
                                 <td>{user.roles?.join(', ')}</td>
                                 <td>{user.gameRole?.join(', ')}</td>
+                                <td><button onClick={(ev) => editUser(ev, user?._id)}><BsPen /></button></td>
+                            </tr>
+                        )) : [...users]?.reverse().map((user, index) => (
+                            <tr key={user._id} onClick={() => navigateToProfile(user?._id)}>
+                                <td>{users.length - index}</td>
+                                <td>{user.email}</td>
+                                <td>{user.first_name}</td>
+                                <td>{user.roles?.join(', ')}</td>
+                                <td>{user.gameRole?.join(', ')}</td>
+                                <td><button onClick={(ev) => editUser(ev, user?._id)}><BsPen /></button></td>
                             </tr>
                         ))}
+
                     </tbody>
                 </table>
             </div>
 
-        </motion.div>
+        </motion.div >
     )
 }
 
