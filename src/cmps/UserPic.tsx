@@ -16,7 +16,6 @@ const UserPic: React.FC<UserPicProps> = ({ username, userColor }) => {
 
 
         const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b // relative luminance formula
-        console.log(luminance < 128 ? 'white' : 'black');
         return luminance < 128 ? 'white' : 'black'  // 128 is mid-point in RGB scale
     }
 
