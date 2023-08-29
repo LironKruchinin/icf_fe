@@ -8,6 +8,17 @@ export interface UserData {
     created_at: number | null;
     updated_at: number | null;
     // salt: string | null;
-    roles: [string] | null;
-    gameRole: [string] | null;
+    roles: Roles[] | null;
+    gameRole: GameRole[] | null;
 }[]
+
+
+export interface GameRole {
+    _id: string;
+    gameRoleName: string;
+}
+
+export interface Roles {
+    _id: string;
+    roleName: string;
+}
