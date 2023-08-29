@@ -8,6 +8,7 @@ type Props = {}
 const AdminPanel = (props: Props) => {
     const userData = useSelector((state: RootState) => state.profile.data)
     const navigate = useNavigate()
+
     useEffect(() => {
         if (userData) {
             const isAdminOrOwner = userData?.roles?.includes('admin') || userData?.roles?.includes('owner')
@@ -20,10 +21,13 @@ const AdminPanel = (props: Props) => {
         }
     }, [userData, navigate])
 
+    const navigateToGroups = () => {
+        navigate('/group')
+    }
 
     return (
         <div>
-            <div>userManagement</div>
+            <div onClick={navigateToGroups}>Manage groups</div>
             <div>missionManagement</div>
             <div>statistics</div>
         </div>
