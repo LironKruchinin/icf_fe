@@ -5,7 +5,12 @@ export interface GroupData {
     groupName: string;
     groupDescription: string;
     createdAt?: number;
-    users?: User[];
+    members?: User[];
+}
+
+export interface MissionGroupData extends GroupData {
+    attendees?: number;
+    numberOfAttendess?: number;
 }
 
 interface User {
