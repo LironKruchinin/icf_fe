@@ -6,26 +6,31 @@ import { RoleData } from '../interface/Role'
 import { apiRequest } from '../services/api'
 import { getCookie } from '../utils/Cookie'
 import Select from 'react-select'
-import { UserData } from '../interface/User'
+import { Roles, UserData } from '../interface/User'
 
 interface SelectProps {
-    value: { _id: string | null, first_name: string | null, userName: string | null };
+    value: {
+        _id: string | null;
+        email: string | null;
+        first_name: string | null;
+        user_name: string | null;
+        roles: Roles[] | null;
+    };
     label: string | null;
 }
 
 const RolePage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
+    const [selectedUsers, setSelectedUsers] = useState<SelectProps[]>([]);
     const [error, setError] = useState<string | null>()
     const [roles, setRoles] = useState<RoleData[]>([])
     const [users, setUsers] = useState<SelectProps[]>([])
     const [originalGroupData, setOriginalRoleData] = useState<RoleData>({
         roleName: '',
-        roleDescription: '',
     })
     const [roleData, setRoleData] = useState<RoleData>({
         roleName: '',
-        roleDescription: '',
     })
     const openModal = () => {
         setIsModalOpen(true)
@@ -38,7 +43,6 @@ const RolePage = () => {
 
         setRoleData({
             roleName: '',
-            roleDescription: '',
         })
     }
 
@@ -56,9 +60,11 @@ const RolePage = () => {
             setUsers(prevState => ([...prevState,
             {
                 value: {
-                    _id: user?._id,
-                    first_name: user?.first_name,
-                    userName: user?.user_name
+                    _id: user._id,
+                    email: user.email,
+                    first_name: user.first_name,
+                    user_name: user.user_name,
+                    roles: user.roles
                 },
                 label: user.user_name
             }
@@ -79,7 +85,13 @@ const RolePage = () => {
     }
 
     const handleSelectChange = (selected: any) => {
-        console.log(selected);
+        const selectedUserIds = selected.map((s: { value: string }) => s.value);
+
+        setRoleData(prevState => ({
+            ...prevState,
+            users: selectedUserIds
+        }))
+        setSelectedUsers(selected)
 
     }
 
@@ -95,7 +107,7 @@ const RolePage = () => {
             if (deletedGroupIndex !== -1) {
                 const newGroup = roles.filter(group => group._id !== id)
                 setRoles(newGroup)
-                await apiRequest('DELETE', `${process.env.REACT_APP_LOCAL_API_URL}/group/${id}`)
+                await apiRequest('DELETE', `${process.env.REACT_APP_LOCAL_API_URL}/role/${id}`)
             }
         } catch (err) {
             console.error("Error deleting event:", err)
@@ -112,10 +124,13 @@ const RolePage = () => {
     const editGroup = (ev: React.MouseEvent<HTMLButtonElement>, id: string | undefined) => {
         ev.stopPropagation()
         setIsEdit(true)
-        const gropuToEdit = roles.find(group => group._id === id)
-        if (gropuToEdit) {
-            setRoleData(gropuToEdit)
-            setOriginalRoleData(gropuToEdit)
+        const groupToEdit = roles.find(group => group._id === id)
+        if (groupToEdit) {
+            setRoleData(groupToEdit)
+            setOriginalRoleData(groupToEdit)
+            const selectedUserIds = groupToEdit.users?.map(u => u._id) || []; // assuming users is an array of user objects
+            const selected = users.filter(u => selectedUserIds.includes(u?.value._id!));
+            setSelectedUsers(selected);
         }
     }
 
@@ -167,17 +182,8 @@ const RolePage = () => {
                             value={roleData.roleName}
                         />
                     </div>
-                    <div>
-                        <label htmlFor="group-description">Group Description: </label>
-                        <input
-                            type="text"
-                            id='group-description'
-                            name='roleDescription'
-                            onChange={(ev) => handleGroup(ev)}
-                            value={roleData.roleDescription}
-                        />
-                    </div>
                     <Select
+                        value={selectedUsers}
                         onChange={handleSelectChange}
                         options={users}
                         closeMenuOnSelect={false}
