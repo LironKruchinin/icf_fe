@@ -3,7 +3,6 @@ import { GameRole } from "./User";
 export interface RoleData {
     _id?: string;
     roleName: string;
-    roleDescription: string;
     createdAt?: number;
     users?: User[];
 }
