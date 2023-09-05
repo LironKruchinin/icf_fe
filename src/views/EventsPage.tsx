@@ -21,6 +21,7 @@ const EventsPage = () => {
     const navigate = useNavigate()
     const [users, setUsers] = useState<SelectProps[]>([])
     // const [usersForEvent, setUsersForEvent] = useState<UserData[]>([])
+    const [selectedUsers, setSelectedUsers] = useState<SelectProps[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
     const [error, setError] = useState<string | null>()
@@ -84,6 +85,7 @@ const EventsPage = () => {
             ...prevState,
             blacklistedUsers: selectedUserIds
         }));
+        setSelectedUsers(selected)
 
     }
 
@@ -100,7 +102,7 @@ const EventsPage = () => {
         }
         try {
             if (isEdit) {
-                if (eventData.eventName === originalEventData.eventName) return
+                // if (eventData.eventName === originalEventData.eventName) return
                 await apiRequest(
                     'PATCH',
                     `${process.env.REACT_APP_LOCAL_API_URL}/event/${eventData._id}`,
@@ -153,6 +155,9 @@ const EventsPage = () => {
         if (eventToEdit) {
             setEventData(eventToEdit)
             setOriginalEventData(eventToEdit)
+            const selectedUserIds = eventToEdit.blacklistedUsers || []; // replace with the actual user ids for this event
+            const selected = users.filter(u => selectedUserIds.includes(u?.value!));
+            setSelectedUsers(selected);
         }
     }
 
@@ -208,15 +213,19 @@ const EventsPage = () => {
                             value={eventData.eventDescription}
                         />
                     </div>
-                    <Select
-                        onChange={handleSelectChange}
-                        options={users}
-                        closeMenuOnSelect={false}
-                        isClearable
-                        isMulti
-                        isSearchable={true}
-                        name='userSelect'
-                    />
+                    <label htmlFor="blacklist">Blacklisted Users:
+                        <Select
+                            value={selectedUsers}
+                            onChange={handleSelectChange}
+                            options={users}
+                            closeMenuOnSelect={false}
+                            isClearable
+                            id='blacklist'
+                            isMulti
+                            isSearchable={true}
+                            name='userSelect'
+                        />
+                    </label>
                     <Calendar handleEvent={handleEvent} isRequired={true}>
                         <label htmlFor="calendar">Final date</label>
                     </Calendar>
