@@ -25,22 +25,25 @@ const MissionPage = (props: Props) => {
             await getMissionData()
         }
         fetchData()
-        canVoteToEvent()
     }, [])
 
-    const canVoteToEvent = () => {
-        if (event?.eventDate) {
-            const daysLeft = Math.ceil((event.eventDate - Date.now()) / millDay)
-            if (daysLeft > 2) setIsVoteMission(false)
-            else setIsVoteMission(true)
+
+    const canVoteToEvent = (eventDate: number) => {
+        if (eventDate) {
+            const daysLeft = Math.ceil((eventDate - Date.now()) / millDay)
+            console.log(daysLeft);
+
+            if (daysLeft <= 2) setIsVoteMission(true)
+            else setIsVoteMission(false)
         }
 
 
     }
 
     const getMissionData = async () => {
-        const selectedMission = await apiRequest('GET', `${process.env.REACT_APP_LOCAL_API_URL}/event/${id}`)
+        const selectedMission: MissionData = await apiRequest('GET', `${process.env.REACT_APP_LOCAL_API_URL}/event/${id}`)
         setEvent(selectedMission)
+        canVoteToEvent(selectedMission.eventDate)
     }
 
     const handleVote = async (ev: React.FormEvent<HTMLFormElement>, groupId: string) => {
