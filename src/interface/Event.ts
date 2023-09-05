@@ -1,3 +1,4 @@
+import { GroupData, MissionGroupData } from "./Group";
 import { UserData } from "./User";
 
 export interface EventData {
@@ -8,4 +9,10 @@ export interface EventData {
     eventCloseDate?: number;
     createdAt?: number;
     users?: UserData[];
+    groups?: GroupData[];
+    blacklistedUsers?: string[]
+}
+
+export interface MissionData extends EventData {
+    groups?: MissionGroupData[]
 }
