@@ -9,9 +9,23 @@ export interface UserData {
     updated_at: number | null;
     // salt: string | null;
     roles: Roles[] | null;
+    user_color: string;
     gameRole: GameRole[] | null;
+    userGroups: UserGroups[];
+    missions: MissionsData[] | null;
 }[]
 
+export interface MissionsData {
+    _id: string,
+    eventName: string,
+    eventDate: number
+}
+
+export interface UserGroups {
+    _id: string,
+    groupName: string,
+    members: string[]
+}
 
 export interface GameRole {
     _id: string;
