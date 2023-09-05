@@ -1,27 +1,42 @@
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { MissionData } from '../interface/Event'
-import { GroupData } from '../interface/Group'
 import { apiRequest } from '../services/api'
-import { convertToDate } from '../utils/dateHandler'
 import { RootState } from '../store/store'
-import { useSelector } from 'react-redux'
 import { getCookie } from '../utils/Cookie'
+import { convertToDate } from '../utils/dateHandler'
 
 type Props = {}
 
 const MissionPage = (props: Props) => {
     const screenState = useSelector((state: RootState) => state.profile)
     const [selectedVote, setSelectedVote] = useState<boolean | null>(null)
+    const [isVoteMission, setIsVoteMission] = useState<boolean>(true)
     const { id } = useParams()
     const [event, setEvent] = useState<MissionData>()
+    const millDay = 86400000
 
     if (!id) {
         throw new Error("Event ID is required.");
     }
     useEffect(() => {
-        getMissionData()
+        const fetchData = async () => {
+            await getMissionData()
+        }
+        fetchData()
+        canVoteToEvent()
     }, [])
+
+    const canVoteToEvent = () => {
+        if (event?.eventDate) {
+            const daysLeft = Math.ceil((event.eventDate - Date.now()) / millDay)
+            if (daysLeft > 2) setIsVoteMission(false)
+            else setIsVoteMission(true)
+        }
+
+
+    }
 
     const getMissionData = async () => {
         const selectedMission = await apiRequest('GET', `${process.env.REACT_APP_LOCAL_API_URL}/event/${id}`)
@@ -61,6 +76,7 @@ const MissionPage = (props: Props) => {
                                 <label htmlFor={`go-${group._id}`}>
                                     <input
                                         type="radio"
+                                        disabled={isVoteMission}
                                         name="vote"
                                         id={`go-${group._id}`}
                                         checked={selectedVote === true}
@@ -70,6 +86,7 @@ const MissionPage = (props: Props) => {
                                 </label>
                                 <label htmlFor={`not-go-${group._id}`}>
                                     <input
+                                        disabled={isVoteMission}
                                         type="radio"
                                         name="vote"
                                         id={`not-go-${group._id}`}
@@ -78,7 +95,10 @@ const MissionPage = (props: Props) => {
                                     />
                                     Not Going
                                 </label>
-                                <button type='submit'>Submit</button>
+                                <button
+                                    disabled={isVoteMission}
+                                    type='submit'
+                                >Submit</button>
                             </form>
                         </div>
                     )
