@@ -119,10 +119,13 @@ const AppHeader = () => {
                     </div>
 
                     {links.map((link, index) => {
-                        if (index === 0) {
-                            return <NavLink to={link.pagePath} key={index}>
-                                <li>{link.linkName}</li>
-                            </NavLink>
+
+                        if (screenState.isAuthenticated) {
+                            if (index === 0) {
+                                return <NavLink to={link.pagePath} key={index}>
+                                    <li>{link.linkName}</li>
+                                </NavLink>
+                            }
                         }
 
                         return <NavLink to={link.pagePath} key={index}>
