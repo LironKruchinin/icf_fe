@@ -42,7 +42,16 @@ interface UserData {
     _id: string,
     user_color: string,
     gameRole: [string] | null;
-
+    userGroups: {
+        _id: string,
+        groupName: string,
+        members: string[]
+    }[],
+    missions: {
+        _id: string,
+        eventName: string,
+        eventDate: string
+    }[]
 }
 
 
