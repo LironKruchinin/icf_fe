@@ -58,10 +58,9 @@ const EventsPage = () => {
                 label: user.user_name
             }
             ]))
-
         })
-
     }
+
     const getEvents = async () => {
         const events = await apiRequest('GET', `${process.env.REACT_APP_LOCAL_API_URL}/event`)
         setEvents(events)
@@ -77,11 +76,15 @@ const EventsPage = () => {
             setEventData(prevState => ({ ...prevState, [name]: value }))
         }
     }
-    const handleSelectChange = (selected: any) => {
-        const lastSelected = selected[selected.length - 1]
 
-        eventData.blacklistedUsers?.push(lastSelected?.value)
-        console.log(eventData);
+    const handleSelectChange = (selected: any) => {
+        const selectedUserIds = selected.map((s: { value: string }) => s.value);
+
+        setEventData(prevState => ({
+            ...prevState,
+            blacklistedUsers: selectedUserIds
+        }));
+
     }
 
     const submitEvent = async (ev: React.FormEvent) => {
@@ -95,7 +98,6 @@ const EventsPage = () => {
             setError('Mission too close')
             return
         }
-
         try {
             if (isEdit) {
                 if (eventData.eventName === originalEventData.eventName) return
@@ -125,6 +127,7 @@ const EventsPage = () => {
         ev.stopPropagation()
         const deletedEventIndex = events.findIndex(event => event._id === id)
         const deletedEvent = events[deletedEventIndex]
+
         try {
             if (deletedEventIndex !== -1) {
                 const newEvents = events.filter(event => event._id !== id)
@@ -154,7 +157,6 @@ const EventsPage = () => {
     }
 
     const viewEvent = async (id: string | undefined) => {
-
         navigate(`/mission/${id}`)
     }
 
