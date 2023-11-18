@@ -21,6 +21,7 @@ const HomePage = () => {
     const screenState = useSelector((state: RootState) => state.profile);
 
     useEffect(() => {
+        document.title = 'ICF Home page';
         const token = Cookies.get('accessToken')
 
         if (token) dispatch(loginUser)
@@ -57,7 +58,7 @@ const HomePage = () => {
                 // isBlackFont: true,
             },
             {
-                imageLink: icf2, // Make a grid of last 4 events
+                imageLink: icf2,
                 boxText: `
                 <h2>Meet Our Members</h2>
                 <span>Spotlighting the Extraordinary Individuals Within Our Ranks</span>
@@ -85,8 +86,10 @@ const HomePage = () => {
         const mainScreenBoxes = boxes.map((box, index) => {
             const userData = screenState?.data
             const userRoles = userData?.roles
+
             const renderContent = () => {
                 if (userData) {
+
                     if (box.buttonText === 'Sign Up') {
                         if (userRoles?.length === 1) {
                             box.boxText = `
@@ -96,7 +99,7 @@ const HomePage = () => {
                             box.buttonText = 'Submit an application'
                             box.buttonLink = '/application'
                         } else {
-                            if (userRoles?.includes('owner') || userRoles?.includes('admin')) {
+                            if (screenState.isAdmin) {
                                 box.boxText = `
                                     <h2>Dashboard Overview</h2>
                                     <span>Provide a brief overview of the website's current status, such as the number of active members,
@@ -110,7 +113,7 @@ const HomePage = () => {
 
                     if (box.buttonText === 'Explore Events') {
                         if (userRoles?.length !== 1) {
-                            if (userRoles?.includes('owner') || userRoles?.includes('admin')) {
+                            if (screenState.isAdmin) {
                                 box.boxText = `
                                     <h2>Event Management!</h2>
                                     <span>Connect, Engage, and Explore with Like-minded Individuals</span>
@@ -122,7 +125,7 @@ const HomePage = () => {
                     }
                     if (box.buttonText === 'Help Us Grow') {
                         if (userRoles?.length !== 1) {
-                            if (userRoles?.includes('owner') || userRoles?.includes('admin')) {
+                            if (screenState.isAdmin) {
                                 box.boxText = `
                                     <h2>Donations Tracking</h2>
                                     <span>Connect, Engage, and Explore with Like-minded Individuals</span>
@@ -134,13 +137,13 @@ const HomePage = () => {
                     }
                     if (box.buttonText === 'Learn More') {
                         if (userRoles?.length !== 1) {
-                            if (userRoles?.includes('owner') || userRoles?.includes('admin')) {
+                            if (screenState.isAdmin) {
                                 box.boxText = `
                                 <h2>User Management</h2>
                                 <span>Connect, Engage, and Explore with Like-minded Individuals</span>
                                 `
                                 box.buttonText = 'Manage Users'
-                                box.buttonLink = '/admin-panel'
+                                box.buttonLink = '/about'
                             }
                         }
                     }

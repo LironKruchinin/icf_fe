@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { FormEntries } from '../../interface/Application';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
+import { FormEntries } from '../../interface/Application';
+import { RootState } from '../../store/store';
 const ApplicationPage = () => {
     const userData = useSelector((state: RootState) => state.profile.data)
     const navigate = useNavigate()

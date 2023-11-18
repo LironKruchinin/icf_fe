@@ -12,9 +12,12 @@ const ProfilePage = (props: Props) => {
     const [user, setUser] = useState<UserData>()
 
     useEffect(() => {
+        document.title = `${user?.first_name} page`
         getUserProfile()
 
         setAutCookie(getCookie('accessToken'))
+        return () => { }
+
     }, [])
 
     const getUserProfile = async () => {

@@ -5,9 +5,12 @@ import ClanExplenation from '../../cmps/ClanExplenation'
 import { UserData } from '../../interface/User'
 import { apiRequest } from '../../services/api'
 import { BsPen } from 'react-icons/bs'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store/store'
 
 
 const AboutPage = () => {
+    const screenState = useSelector((state: RootState) => state.profile);
     const [users, setUsers] = useState<UserData[]>([])
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
     const [sortColumn, setSortColumn] = useState<'index' | 'email' | 'first_name' | 'roles' | 'gameRole'>('index');
@@ -21,6 +24,9 @@ const AboutPage = () => {
 
     useEffect(() => {
         getUsers()
+        document.title = 'About page';
+        return () => { }
+
     }, [])
 
     const getUsers = async () => {
@@ -68,7 +74,7 @@ const AboutPage = () => {
                             <th onClick={() => handleSort('first_name')}>First Name  {sortDirection === 'asc' ? '▲' : '▼'}</th>
                             <th>Roles</th>
                             <th onClick={() => handleSort('gameRole')}>Game roles  {sortDirection === 'asc' ? '▲' : '▼'}</th>
-                            <th></th>
+                            {screenState.isAdmin && <th></th>}
                         </tr>
                     </thead>
                     <tbody>
@@ -78,18 +84,18 @@ const AboutPage = () => {
                                 <td>{index + 1}</td>
                                 <td>{user.email}</td>
                                 <td>{user.first_name}</td>
-                                <td>{user.roles?.join(', ')}</td>
+                                <td>{user.roles?.map(role => role.roleName).join(', ')}</td>
                                 <td>{user.gameRole?.join(', ')}</td>
-                                <td><button onClick={(ev) => editUser(ev, user?._id)}><BsPen /></button></td>
+                                {screenState.isAdmin && <td><button onClick={(ev) => editUser(ev, user?._id)}><BsPen /></button></td>}
                             </tr>
                         )) : [...users]?.reverse().map((user, index) => (
                             <tr key={user._id} onClick={() => navigateToProfile(user?._id)}>
                                 <td>{users.length - index}</td>
                                 <td>{user.email}</td>
                                 <td>{user.first_name}</td>
-                                <td>{user.roles?.join(', ')}</td>
+                                <td>{user.roles?.map(role => role.roleName).join(', ')}</td>
                                 <td>{user.gameRole?.join(', ')}</td>
-                                <td><button onClick={(ev) => editUser(ev, user?._id)}><BsPen /></button></td>
+                                {screenState.isAdmin && <td><button onClick={(ev) => editUser(ev, user?._id)}><BsPen /></button></td>}
                             </tr>
                         ))}
 

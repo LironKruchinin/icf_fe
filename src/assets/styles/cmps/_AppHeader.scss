@@ -67,3 +67,58 @@ ul {
         width: 100%;
     }
 }
+
+.language-switcher {
+    position: relative;
+    height: 100%;
+    padding: 10px 0;
+
+    .languages {
+        height: 0;
+    }
+
+    &:hover .languages {
+        height: 160px;
+    }
+
+    span {
+        cursor: pointer;
+        font-size: 1.5em;
+        display: flex;
+    }
+
+    button {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        padding: 0 20px;
+
+        &:hover {
+            background-color: darken($color: $white, $amount: 15);
+        }
+
+        img {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .languages {
+        border-radius: 8px;
+        background-color: #ebebeb;
+        width: 100px;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        overflow: hidden;
+        transition: height 0.1s ease-out;
+        margin-top: 10px;
+        z-index: 15;
+        /* right: -59%; */
+        transform: translateX(-35%);
+    }
+
+}

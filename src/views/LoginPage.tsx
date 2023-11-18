@@ -46,6 +46,8 @@ const LoginPage = () => {
                 'POST',
                 `${process.env.REACT_APP_LOCAL_API_URL}/auth/login`,
                 formData)
+            console.log('user', user);
+
             dispatch(loginUser(user))
 
             if (isRememberPassword) setCookie('accessToken', access_token, 9)

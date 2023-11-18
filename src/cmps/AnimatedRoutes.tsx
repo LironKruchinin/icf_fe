@@ -20,25 +20,37 @@ import EventsPage from '../views/EventsPage';
 import MissionPage from '../views/MissionPage';
 import GroupPage from '../views/GroupPage';
 import RolePage from '../views/RolePage';
+import { apiRequest } from '../services/api';
+import GameRolePage from '../views/GameRolePage';
 
 const AnimatedRoutes = () => {
     const location = useLocation()
     const dispatch: AppDispatch = useDispatch()
     const userEmail = useSelector((state: RootState) => state.profile.data)
-
     const hasUserDataBeenFetched = useSelector((state: RootState) => state.profile.fetched);
+    const state = useSelector((state) => state);
+    console.log('state', state);
 
     useEffect(() => {
         const token = Cookies.get('accessToken');
         const isProfileRoute = location.pathname.startsWith('/profile/');
 
         if (token && !isProfileRoute && !hasUserDataBeenFetched) {
-            console.log('animated route', userEmail?.email);
+            if (userEmail?.email) {
+                console.log('hasUserDataBeenFetched', hasUserDataBeenFetched);
 
-            dispatch(fetchUserData(userEmail?.email));
+                const fetchData = async () => {
+                    await dispatch(fetchUserData(userEmail.email));
+                };
+
+                fetchData().then(() => {
+                    console.log('hasUserDataBeenFetched', hasUserDataBeenFetched);
+                });
+            }
         }
-    }, [dispatch, location.pathname, userEmail?.email, hasUserDataBeenFetched]);
 
+        return () => { }
+    }, [dispatch, location.pathname, userEmail?.email, hasUserDataBeenFetched]);
 
     return (
         <AnimatePresence>
@@ -48,6 +60,7 @@ const AnimatedRoutes = () => {
                 <Route path='/mission/:id' element={<MissionPage />} />
                 <Route path='/application' element={<ApplicationPage />} />
                 <Route path='/admin-panel' element={<AdminPanel />} />
+                <Route path='/game-role' element={<GameRolePage />} />
                 <Route path='/group' element={<GroupPage />} />
                 <Route path='/role' element={<RolePage />} />
                 <Route path='/login' element={<LoginPage />} />

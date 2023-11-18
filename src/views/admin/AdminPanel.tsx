@@ -11,9 +11,14 @@ const AdminPanel = (props: Props) => {
 
     useEffect(() => {
         if (userData) {
-            const isAdminOrOwner = userData?.roles?.includes('admin') || userData?.roles?.includes('owner')
+
+            const userRoles = userData?.roles
+            const roleNames = userRoles?.map(role => role.roleName.toLowerCase()) || []
+
+            const isAdminOrOwner = roleNames.includes('admin') || roleNames.includes('owner')
 
             if (!isAdminOrOwner) navigate('/no-permission')
+            document.title = 'Administrators page';
         } else { navigate('/no-permission') }
 
         return () => {

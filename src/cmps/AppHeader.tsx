@@ -4,7 +4,7 @@ import { HiMoon, HiSun } from "react-icons/hi2";
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import icfImage from '../assets/images/icf_logo.png';
-import { logoutUser } from '../features/profileSlice';
+import { logoutUser, setAdmin } from '../features/profileSlice';
 import { Links } from '../interface/Header';
 import { AppDispatch, RootState, persistor } from '../store/store';
 import { getCookie, removeCookie } from '../utils/Cookie';
@@ -12,10 +12,12 @@ import { getLocalStorage, removeLocalStorageKey, setLocalStorage } from '../util
 import LoadingSpinner from './LoadingSpinner';
 import ToggleSwitch from './ToggleSwitch';
 import UserPic from './UserPic';
+import { IoLanguage } from "react-icons/io5";
 
 const AppHeader = () => {
     const dispatch: AppDispatch = useDispatch()
     const { t, i18n } = useTranslation()
+    const [expanded, setExpanded] = useState<boolean>(false)
     const [isDarkmode, setIsDarkMode] = useState<boolean | null>(getLocalStorage('isDarkMode'))
     const screenState = useSelector((state: RootState) => state.profile)
     const [isLoggingOut, setIsLoggingOut] = useState(false)
@@ -36,39 +38,48 @@ const AppHeader = () => {
         ])
     ]
     const languages = [
-        { code: 'en', label: 'En' },
-        { code: 'he', label: 'He' }
+        { code: 'en', label: 'GB' },
+        { code: 'he', label: 'IL' }
     ]
     const checkCookieExpiration = useCallback(() => {
+
         const currentAuthCookie = getCookie('accessToken');
         if (!currentAuthCookie) {
-            console.log('removing cookie');
             signOut();
         }
-    }, []);
-    if (screenState.data && (screenState.data.roles?.includes('owner') || screenState.data.roles?.includes('admin'))) links.push({ pagePath: '/admin-panel', linkName: 'panel' })
+    }, [])
+
+    if (screenState.data) {
+        const userData = screenState?.data
+        const userRoles = userData?.roles
+        const roleNames = userRoles?.map(role => role.roleName.toLowerCase()) || []
+
+        if (roleNames.includes('owner') || roleNames.includes('admin')) {
+            dispatch(setAdmin())
+            links.push({ pagePath: '/admin-panel', linkName: 'panel' })
+        }
+    }
 
     useEffect(() => {
-        checkCookieExpiration()
-        document.body.className = isDarkmode ? 'dark-mode' : 'light-mode'
-
-        document.addEventListener("visibilitychange", () => {
+        const onVisibilityChange = () => {
             if (!document.hidden) {
                 checkCookieExpiration()
             }
-        })
-        return () => {
-            document.removeEventListener("visibilitychange", checkCookieExpiration);
-        }
-    }, [checkCookieExpiration, isDarkmode, screenState]);
+        };
 
-    // useEffect(() => {
-    //     document.body.className = isDarkmode ? 'dark-mode' : 'light-mode'
-    // }, [isDarkmode, screenState])
+        checkCookieExpiration();
+        document.body.className = isDarkmode ? 'dark-mode' : 'light-mode';
+        document.addEventListener("visibilitychange", onVisibilityChange);
+
+        return () => {
+            document.removeEventListener("visibilitychange", onVisibilityChange);
+        };
+    }, [checkCookieExpiration, isDarkmode, screenState]);
 
     const changeLanguage = (langCode: string) => {
         i18n.changeLanguage(langCode)
         document.documentElement.dir = langCode === 'he' ? 'rtl' : 'ltr'
+        setExpanded(false)
     }
 
     const toggleDarkMode = (isOn: boolean) => {
@@ -111,11 +122,17 @@ const AppHeader = () => {
                     />
 
                     <div className="language-switcher">
-                        {languages.map(lang => (
-                            <button key={lang.code} onClick={() => changeLanguage(lang.code)}>
-                                {lang.label}
-                            </button>
-                        ))}
+                        <span
+                            onClick={() => setExpanded(prevState => !prevState)}
+                        >
+                            <IoLanguage /></span>
+                        <div className={'languages'}>
+                            {languages.map(lang => (
+                                <button key={lang.code} onClick={() => changeLanguage(lang.code)}>
+                                    <img src={`https://flagsapi.com/${lang.label}/flat/64.png`} />
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
                     {links.map((link, index) => {

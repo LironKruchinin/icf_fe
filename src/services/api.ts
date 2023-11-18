@@ -3,7 +3,8 @@ import axios from 'axios';
 export const apiRequest = async (
     method: 'DELETE' | 'GET' | 'POST' | 'PATCH',
     endpoint: string,
-    data: object = {}, headerProperties: object = {}
+    data: object = {},
+    headerProperties: object = {}
 ) => {
     try {
         let response
@@ -17,15 +18,13 @@ export const apiRequest = async (
 
         switch (method) {
             case 'POST':
-                console.log(config);
-
                 response = await axios.post(endpoint, data, config)
                 break;
             case 'GET':
-                response = await axios.get(endpoint, data)
+                response = await axios.get(endpoint, config)
                 break;
             case 'DELETE':
-                response = await axios.delete(endpoint, data)
+                response = await axios.delete(endpoint, config)
                 break;
             case 'PATCH':
                 response = await axios.patch(endpoint, data, config)

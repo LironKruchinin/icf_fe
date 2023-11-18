@@ -7,6 +7,9 @@ import { getCookie } from '../utils/Cookie'
 import { BsPen } from 'react-icons/bs'
 import { GameRole, UserData } from '../interface/User'
 import Select from 'react-select'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../store/store'
+import { removeUserFromGroup, updateUserGroup } from '../features/profileSlice'
 
 interface SelectProps {
     value: {
@@ -15,10 +18,13 @@ interface SelectProps {
         user_name: string | null;
         gameRole: GameRole[] | null;
     };
-    label: string | null;
+    label: string | null
 }
 
 const GroupPage = () => {
+    const dispatch: AppDispatch = useDispatch()
+    const accessToken = getCookie('accessToken')
+    const screenState = useSelector((state: RootState) => state.profile);
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
     const [error, setError] = useState<string | null>()
@@ -31,7 +37,7 @@ const GroupPage = () => {
     const [groupData, setGroupData] = useState<GroupData>({
         groupName: '',
         groupDescription: '',
-        members: []
+        users: []
     })
     const openModal = () => {
         setIsModalOpen(true)
@@ -45,11 +51,13 @@ const GroupPage = () => {
         setGroupData({
             groupName: '',
             groupDescription: '',
-            members: []
+            users: []
         })
     }
     useEffect(() => {
         getUsers()
+        return () => { }
+
     }, [])
 
     useEffect(() => {
@@ -77,7 +85,7 @@ const GroupPage = () => {
 
     const handleSelectChange = (selected: any) => {
         const lastSelected = selected[selected.length - 1]
-        groupData.members?.push(lastSelected?.value)
+        groupData.users?.push(lastSelected?.value)
     }
 
     const getGroups = async () => {
@@ -101,8 +109,11 @@ const GroupPage = () => {
         try {
             if (deletedGroupIndex !== -1) {
                 const newGroup = groups.filter(group => group._id !== id)
-                setGroups(newGroup)
-                await apiRequest('DELETE', `${process.env.REACT_APP_LOCAL_API_URL}/group/${id}`)
+
+                if (id !== undefined) {
+                    await dispatch(removeUserFromGroup(id));
+                    setGroups(newGroup)
+                }
             }
         } catch (err) {
             console.error("Error deleting event:", err)
@@ -130,24 +141,26 @@ const GroupPage = () => {
         ev.preventDefault()
         const accessToken = getCookie('accessToken')
         groupData.createdAt = Date.now()
+        console.log(groupData);
 
         try {
-            if (isEdit) {
-                if (groupData.groupName === originalGroupData.groupName) return
-                await apiRequest(
-                    'PATCH',
-                    `${process.env.REACT_APP_LOCAL_API_URL}/group/${groupData._id}`,
-                    groupData,
-                    { Authorization: `Bearer ${accessToken}` }
-                )
-            } else {
-                await apiRequest(
-                    'POST',
-                    `${process.env.REACT_APP_LOCAL_API_URL}/group`,
-                    groupData,
-                    { Authorization: `Bearer ${accessToken}` }
-                )
-            }
+            // if (isEdit) {
+            //     // if (groupData.groupName === originalGroupData.groupName) return
+            //     await apiRequest(
+            //         'PATCH',
+            //         `${process.env.REACT_APP_LOCAL_API_URL}/group/${groupData._id}`,
+            //         groupData,
+            //         { Authorization: `Bearer ${accessToken}` }
+            //     )
+            // } else {
+            //     await apiRequest(
+            //         'POST',
+            //         `${process.env.REACT_APP_LOCAL_API_URL}/group`,
+            //         groupData,
+            //         { Authorization: `Bearer ${accessToken}` }
+            //     )
+            // }
+            await dispatch(updateUserGroup(groupData));
         } catch (err) {
             console.error("Error:", err)
         } finally {
@@ -157,7 +170,7 @@ const GroupPage = () => {
 
     return (
         <div>
-            <button onClick={openModal}>Open Modal</button>
+            {screenState.isAdmin && <button onClick={openModal}>Open Modal</button>}
 
             {(isModalOpen || isEdit) && (
                 <Modal isOpen={isModalOpen || isEdit} onClose={closeModal}>
@@ -201,9 +214,9 @@ const GroupPage = () => {
 
             {groups.map(group => (
                 <div key={group._id} onClick={() => viewGroup(group._id)}>
-                    <button onClick={(ev) => deleteGroup(ev, group._id)}>X</button>
+                    {screenState.isAdmin && <button onClick={(ev) => deleteGroup(ev, group._id)}>X</button>}
                     <span>{group.groupName}</span>
-                    <button onClick={(ev) => editGroup(ev, group._id)}><BsPen /></button>
+                    {screenState.isAdmin && <button onClick={(ev) => editGroup(ev, group._id)}><BsPen /></button>}
                 </div>
             ))}
         </div>

@@ -2,15 +2,20 @@ import { GameRole } from "./User";
 
 export interface GroupData {
     _id?: string;
-    groupName: string;
-    groupDescription: string;
+    groupName?: string;
+    groupDescription?: string;
     createdAt?: number;
-    members?: User[];
+    users?: User[];
 }
 
 export interface MissionGroupData extends GroupData {
     attendees?: number;
     numberOfAttendess?: number;
+    votes?: {
+        userId: string;
+        vote: boolean;
+        _id: string;
+    }[]
 }
 
 interface User {

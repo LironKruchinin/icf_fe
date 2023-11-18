@@ -11,6 +11,8 @@ import { BsPen } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { UserData } from '../interface/User';
 import Select from 'react-select'
+import { RootState } from '../store/store';
+import { useSelector } from 'react-redux';
 
 interface SelectProps {
     value: string | null;
@@ -18,8 +20,11 @@ interface SelectProps {
 }
 
 const EventsPage = () => {
+    const screenState = useSelector((state: RootState) => state.profile)
+    const accessToken = getCookie('accessToken')
     const navigate = useNavigate()
     const [users, setUsers] = useState<SelectProps[]>([])
+    // const [isAdmin]
     // const [usersForEvent, setUsersForEvent] = useState<UserData[]>([])
     const [selectedUsers, setSelectedUsers] = useState<SelectProps[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -44,10 +49,15 @@ const EventsPage = () => {
 
     useEffect(() => {
         getUsers()
+        document.title = 'Events page'
+        return () => { }
+
     }, [])
 
     useEffect(() => {
         getEvents()
+        return () => { }
+
     }, [eventData])
 
     const getUsers = async () => {
@@ -134,7 +144,12 @@ const EventsPage = () => {
             if (deletedEventIndex !== -1) {
                 const newEvents = events.filter(event => event._id !== id)
                 setEvents(newEvents)
-                await apiRequest('DELETE', `${process.env.REACT_APP_LOCAL_API_URL}/event/${id}`)
+                await apiRequest(
+                    'DELETE',
+                    `${process.env.REACT_APP_LOCAL_API_URL}/event/${id}`,
+                    [],
+                    { Authorization: `Bearer ${accessToken}` }
+                )
             }
         } catch (err) {
             console.error("Error deleting event:", err)
@@ -155,7 +170,7 @@ const EventsPage = () => {
         if (eventToEdit) {
             setEventData(eventToEdit)
             setOriginalEventData(eventToEdit)
-            const selectedUserIds = eventToEdit.blacklistedUsers || []; // replace with the actual user ids for this event
+            const selectedUserIds = eventToEdit.blacklistedUsers || [];
             const selected = users.filter(u => selectedUserIds.includes(u?.value!));
             setSelectedUsers(selected);
         }
@@ -186,7 +201,7 @@ const EventsPage = () => {
 
     return (
         <div>
-            <button onClick={openModal}>Open Modal</button>
+            {screenState.isAdmin && <button onClick={openModal}>Open Modal</button>}
 
             {(isModalOpen || isEdit) && (
                 <Modal isOpen={isModalOpen || isEdit} onClose={closeModal}>
@@ -236,9 +251,9 @@ const EventsPage = () => {
 
             {events?.map(event => (
                 <div key={event._id} onClick={() => viewEvent(event._id)}>
-                    <button onClick={(ev) => deleteEvent(ev, event._id)}>X</button>
+                    {screenState.isAdmin && <button onClick={(ev) => deleteEvent(ev, event._id)}>X</button>}
                     <span>{event.eventName}</span>
-                    <button onClick={(ev) => editEvent(ev, event._id)}><BsPen /></button>
+                    {screenState.isAdmin && <button onClick={(ev) => editEvent(ev, event._id)}><BsPen /></button>}
                 </div>
             ))}
         </div>

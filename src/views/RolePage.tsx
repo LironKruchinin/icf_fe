@@ -7,6 +7,10 @@ import { apiRequest } from '../services/api'
 import { getCookie } from '../utils/Cookie'
 import Select from 'react-select'
 import { Roles, UserData } from '../interface/User'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../store/store'
+import { fetchUserData, updateUserGroup } from '../features/profileSlice'
+import { AsyncThunkAction, Dispatch, AnyAction } from '@reduxjs/toolkit'
 
 interface SelectProps {
     value: {
@@ -20,6 +24,8 @@ interface SelectProps {
 }
 
 const RolePage = () => {
+    const dispatch: AppDispatch = useDispatch()
+    const screenState = useSelector((state: RootState) => state.profile)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
     const [selectedUsers, setSelectedUsers] = useState<SelectProps[]>([]);
@@ -44,14 +50,17 @@ const RolePage = () => {
         setRoleData({
             roleName: '',
         })
+        setSelectedUsers([])
     }
 
     useEffect(() => {
         getUsers()
+        return () => { }
     }, [])
 
     useEffect(() => {
         getRoles()
+        return () => { }
     }, [roleData])
 
     const getUsers = async () => {
@@ -141,7 +150,7 @@ const RolePage = () => {
 
         try {
             if (isEdit) {
-                if (roleData.roleName === originalGroupData.roleName) return
+                // if (roleData.roleName === originalGroupData.roleName) return
                 await apiRequest(
                     'PATCH',
                     `${process.env.REACT_APP_LOCAL_API_URL}/role/${roleData._id}`,
@@ -165,7 +174,7 @@ const RolePage = () => {
 
     return (
         <div>
-            <button onClick={openModal}>Open Modal</button>
+            {screenState.isAdmin && <button onClick={openModal}>Open Modal</button>}
 
             {(isModalOpen || isEdit) && (
                 <Modal isOpen={isModalOpen || isEdit} onClose={closeModal}>
@@ -200,9 +209,9 @@ const RolePage = () => {
 
             {roles.map(role => (
                 <div key={role._id} onClick={() => viewGroup(role._id)}>
-                    <button onClick={(ev) => deleteGroup(ev, role._id)}>X</button>
+                    {screenState.isAdmin && <button onClick={(ev) => deleteGroup(ev, role._id)}>X</button>}
                     <span>{role.roleName}</span>
-                    <button onClick={(ev) => editGroup(ev, role._id)}><BsPen /></button>
+                    {screenState.isAdmin && <button onClick={(ev) => editGroup(ev, role._id)}><BsPen /></button>}
                 </div>
             ))}
         </div>

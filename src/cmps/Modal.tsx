@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useRef } from 'react';
 
 interface ModalProps {
     isOpen: boolean;
@@ -7,10 +7,19 @@ interface ModalProps {
 }
 
 const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
+    const modalRef = useRef(null);
+
+    const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        // Check if the click is outside the modal content
+        if (event.target === modalRef.current) {
+            onClose();
+        }
+    }
+
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay">
+        <div className="modal-overlay" onClick={handleOverlayClick} ref={modalRef}>
             <div className="modal-content">
                 <button className="modal-close-button" onClick={onClose}>
                     &times;
